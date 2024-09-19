@@ -1,0 +1,1 @@
+Proyecto para la creacion de tienda virtual de artesanias peruanas usando react, express, mongo db, tailwind css y arquitectura hexagonal
