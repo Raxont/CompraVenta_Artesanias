@@ -1,6 +1,6 @@
 import 'boxicons'
 
-export default function Component() {
+export function Register() {
   return (
     
     <div className="min-h-screen bg-[url('../../../public/fondo.webp')] bg-zinc-700 bg-cover bg-center bg-blend-overlay flex flex-col items-center justify-center p-4 text-white">
