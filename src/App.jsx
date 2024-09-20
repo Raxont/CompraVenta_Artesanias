@@ -8,9 +8,25 @@ import ButtonTheme from './components/ButtonTheme'; // Importa el componente But
 
 function App() {
   const [count, setCount] = useState(0);
+  // Estado para almacenar los datos del backend
+  const [data, setData] = useState(null);
+  // Estado para manejar errores
+  const [error, setError] = useState(null);
 
+  const consultaAlBackend = async () => {
+    try {
+      const response = await fetch('/api/examples/');
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const result = await response.json();
+      setData(result); // Actualiza el estado con los datos recibidos
+    } catch (err) {
+      setError(err); // Actualiza el estado con el error
+      console.error('Error:', err);
+    }
+  };
   useEffect(() => {
     initTheme(); // Inicializa el tema al cargar la app
+    consultaAlBackend(); // Llama la función para consultar al backend al cargar la app.
   }, []);
 
   return (
@@ -43,8 +59,9 @@ function App() {
           <ButtonTheme />
         </div>
 
-        <p className="read-the-docs mt-4 text-gray-500 dark:text-gray-400">
-          Click on the Vite and React logos to learn more
+        {/* Aquí se muestra el mensaje del backend */}
+        <p className="read-the-docs mt-4 text-gray-500 dark:text-gray-400 capitalize">
+          backend dice: {error ? `Error: ${error.message}` : data ? data.message : 'Cargando mensaje...'}
         </p>
       </div>
     </div>
