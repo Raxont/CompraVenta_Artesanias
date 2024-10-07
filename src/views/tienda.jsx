@@ -10,12 +10,12 @@ import { StoreChatIcon } from "../components/storeChatIcon";
 
 export const tiendaLoader = async ({params}) => {
     try {
-        const resUser = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/users/session-data`, {
+        const resUser = await fetch(`/api/users/session-data`, {
             method: 'GET',
             credentials: 'include'
         });
         const dataUser = await resUser.json();
-        let resProducts = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/workshops/products/${params.id}`);
+        let resProducts = await fetch(`/api/workshops/products/${params.id}`);
         let dataProducts = await resProducts.json();
         return {productos: dataProducts, usuario: dataUser}
     } catch(err) {

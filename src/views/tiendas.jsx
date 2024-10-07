@@ -9,12 +9,12 @@ import { useState } from 'react';
 
 export const tiendasLoader = async() => {
     try {
-        const resUser = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/users/session-data`, {
+        const resUser = await fetch(`/api/users/session-data`, {
             method: 'GET',
             credentials: 'include'
         });
         const dataUser = await resUser.json();
-        let res = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/workshops`);
+        let res = await fetch(`/api/workshops`);
         let data = await res.json();
         if (!res.ok) {
             throw new Error("No se encontraron tiendas");

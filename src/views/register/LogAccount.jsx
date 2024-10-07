@@ -14,7 +14,7 @@ export function LogAccount() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const response = await fetch('http://localhost:3001/users/loginAccount', {
+			const response = await fetch('/api/users/loginAccount', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

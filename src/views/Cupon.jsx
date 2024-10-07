@@ -33,7 +33,7 @@ function Cupon() {
     // Función para buscar si hay un cupón asignado para el usuario
     const fetchUserCoupon = async (userId) => {
       try {
-        const response = await fetch(`http://localhost:3001/coupons/user/${userId}`, {
+        const response = await fetch(`/api/coupons/user/${userId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

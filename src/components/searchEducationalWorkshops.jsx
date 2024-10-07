@@ -13,7 +13,7 @@ export function SearchEducationalWorkshops ({ usuario, setSearchQuery }) {
     const newPath = currentPath.split("/").slice(0, -1).join("/") ;
 
     const getProducts = async () => {
-        const res = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/educationalWorkshops`);
+        const res = await fetch(`/api/educationalWorkshops`);
         const data = await res.json();
         return data;
     };

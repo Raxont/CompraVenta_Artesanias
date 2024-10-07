@@ -8,7 +8,7 @@ const SecccionCartCard = ({ cart, onUpdateCart }) => {
   // Obtener el userId desde /session-data
   const fetchUserId = async () => {
     try {
-      const response = await fetch('http://localhost:3001/users/session-data', {
+      const response = await fetch('/api/users/session-data', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -53,7 +53,7 @@ const SecccionCartCard = ({ cart, onUpdateCart }) => {
     };
 
     try {
-      const response = await fetch('http://localhost:3001/users/cart/increase', {
+      const response = await fetch('/api/users/cart/increase', {
         method: 'PUT', 
         credentials: 'include',
         headers: {
@@ -91,7 +91,7 @@ const SecccionCartCard = ({ cart, onUpdateCart }) => {
         if (newDatos[index].cantidad <= 0) {
             await handleRemove(index); // Llama a la función para eliminar el producto
         } else {
-            const response = await fetch('http://localhost:3001/users/cart/decrease', {
+            const response = await fetch('/api/users/cart/decrease', {
                 method: 'PUT',
                 credentials: 'include',
                 headers: {
@@ -126,7 +126,7 @@ const SecccionCartCard = ({ cart, onUpdateCart }) => {
     
     // Realiza la llamada a la API para eliminar el producto
     try {
-      const response = await fetch('http://localhost:3001/users/cart', {
+      const response = await fetch('/api/users/cart', {
         method: 'DELETE',
         credentials: 'include', // Añade esto si necesitas enviar cookies
         headers: {

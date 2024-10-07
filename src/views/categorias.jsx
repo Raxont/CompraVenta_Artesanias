@@ -8,12 +8,12 @@ import { useState } from 'react';
 
 export const categoriasLoader = async ({params}) => {
     try {
-        const resUser = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/users/session-data`, {
+        const resUser = await fetch(`/api/users/session-data`, {
             method: 'GET',
             credentials: 'include'
         });
         const dataUser = await resUser.json();
-        let res = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/products/category/${encodeURIComponent(params.categoria)}`);
+        let res = await fetch(`/api/products/category/${encodeURIComponent(params.categoria)}`);
         if (!res.ok) {
             throw new Error('No se encontraron productos');
         }

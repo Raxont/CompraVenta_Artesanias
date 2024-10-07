@@ -13,7 +13,7 @@ export function SearchProducts ({ usuario, setSearchQuery }) {
     const newPath = currentPath.split("/").slice(0, -2).join("/") ;
 
     const getProducts = async () => {
-        const res = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/products`);
+        const res = await fetch(`/api/products`);
         const data = await res.json();
         return data;
     };

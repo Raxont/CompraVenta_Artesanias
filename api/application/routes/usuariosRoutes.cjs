@@ -105,7 +105,7 @@ router.get(
         };
 
         // Realiza la petición con fetch para crear el usuario
-        const userResponse = await fetch("http://localhost:3001/users", {
+        const userResponse = await fetch("/api/users", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -148,7 +148,7 @@ router.get(
 router.get(
   "/google/callback",
   passportGoogle.authenticate("google", {
-    failureRedirect: "http://localhost:3001/login",
+    failureRedirect: "/api/login",
   }),
   async (req, res) => {
     try {
@@ -199,7 +199,7 @@ router.get(
         };
 
         // Realiza la petición con fetch para crear el usuario
-        const userResponse = await fetch("http://localhost:3001/users", {
+        const userResponse = await fetch("/api/users", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -244,7 +244,7 @@ router.get(
 router.get(
   "/discord/callback",
   passportDiscord.authenticate("discord", {
-    failureRedirect: "http://localhost:3001/login",
+    failureRedirect: "/api/login",
   }),
   async (req, res) => {
     try {
@@ -297,7 +297,7 @@ router.get(
         };
 
         // Realiza la petición con fetch para crear el usuario
-        const userResponse = await fetch("http://localhost:3001/users", {
+        const userResponse = await fetch("/api/users", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

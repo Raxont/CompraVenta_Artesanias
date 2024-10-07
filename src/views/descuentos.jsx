@@ -8,12 +8,12 @@ import {TrianguloIzquierdo} from "../assets/trianguloIzquierdo.jsx";
 
 export const descuentosLoader = async ({ params }) => {
   try {
-    const resUser = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/users/session-data`, {
+    const resUser = await fetch(`/api/users/session-data`, {
       method: 'GET',
       credentials: 'include'
   });
   const dataUser = await resUser.json();
-    const res = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/products/discounts/${params.categoria}`);
+    const res = await fetch(`/api/products/discounts/${params.categoria}`);
     if (!res.ok) {
       throw new Error("No se encontraron productos");
     }

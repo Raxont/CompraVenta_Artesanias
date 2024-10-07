@@ -11,7 +11,7 @@ const CuponTicket = () => {
 
     // Realiza la llamada a la API para procesar la compra
     try {
-      const response = await fetch(`http://localhost:3001/users/cart/${"650f4c29a5f1bc1234567892"}/${coupon}`, {
+      const response = await fetch(`/api/users/cart/${"650f4c29a5f1bc1234567892"}/${coupon}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

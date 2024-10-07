@@ -10,7 +10,7 @@ export function ProductoCard ({userId, productId, name, workshopName, price, img
 
     const removeFavourites = async (userId, productId) => {
         try {
-            const res = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/users/removeFavourite/${userId}/${productId}`, {
+            const res = await fetch(`/api/users/removeFavourite/${userId}/${productId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

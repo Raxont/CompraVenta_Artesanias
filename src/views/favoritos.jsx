@@ -6,12 +6,12 @@ import { useLoaderData } from "react-router-dom"
 
 export const favoritosLoader = async ({params}) => {
     try {
-        const resUser = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/users/session-data`, {
+        const resUser = await fetch(`/api/users/session-data`, {
             method: 'GET',
             credentials: 'include'
         });
         const dataUser = await resUser.json();
-        const resProducts = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/products/favourites/${dataUser.userId}/${encodeURIComponent(params.categoria)}`);
+        const resProducts = await fetch(`/api/products/favourites/${dataUser.userId}/${encodeURIComponent(params.categoria)}`);
         if (!resProducts.ok) {
             throw new Error('No se encontraron productos');
         }

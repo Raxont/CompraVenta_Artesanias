@@ -7,7 +7,7 @@ const Compras = () => {
     
     const fetchUserId = async () => {
         try {
-          const response = await fetch('http://localhost:3001/users/session-data', {
+          const response = await fetch('/api/users/session-data', {
             method: 'GET',
             credentials: 'include',
             headers: {

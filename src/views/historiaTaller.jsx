@@ -6,7 +6,7 @@ import { initTheme } from '../tools/theme';
 import { useEffect, useState } from 'react';
 
 export const HistoriaTallerLoader = async ({params}) => {
-    let res = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/workshops/${params.id}`);
+    let res = await fetch(`/api/workshops/${params.id}`);
     let data = await res.json();
     return data
 }

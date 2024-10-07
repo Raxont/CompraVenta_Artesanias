@@ -10,7 +10,7 @@ import {TrianguloIzquierdo} from "../assets/trianguloIzquierdo.jsx";
 
 export const homeLoader = async () => {
   try {
-    const resUser = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/users/session-data`, {
+    const resUser = await fetch(`/api/users/session-data`, {
       method: 'GET',
       credentials: 'include'
     });

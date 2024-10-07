@@ -22,7 +22,7 @@ export function User() {
   useEffect(() => {
     const fetchUserId = async () => {
       try {
-        const response = await fetch('http://localhost:3001/users/session-data', {
+        const response = await fetch('/api/users/session-data', {
           method: 'GET',
           credentials: 'include',
           headers: {
@@ -44,7 +44,7 @@ export function User() {
   
     const fetchUserData = async (id) => {
       try {
-        const response = await fetch(`http://localhost:3001/users/${id}`, {
+        const response = await fetch(`/api/users/${id}`, {
           method: 'GET',
           credentials: 'include',
           headers: {
@@ -82,7 +82,7 @@ export function User() {
       telefono: `${countryCode} ${phoneNumber}`
     }
     try {
-      const response = await fetch(`http://localhost:3001/users/${userId}`, {
+      const response = await fetch(`/api/users/${userId}`, {
         method: 'PUT',
         credentials: 'include',
         headers: {
@@ -108,7 +108,7 @@ export function User() {
       formData.append("file", file);
   
       try {
-        const response = await fetch("http://localhost:3001/users/upload-profile-picture", {
+        const response = await fetch("/api/users/upload-profile-picture", {
           method: "POST",
           body: formData,
           credentials: 'include',
@@ -149,7 +149,7 @@ export function User() {
               alt="Profile picture"
               className="rounded-full border-2 border-red-800 dark:border-0 w-33 h-33 object-cover"
               height="180"
-              src={`http://localhost:3001/fotos-de-perfil/${userData.fotoPerfil}`}
+              src={`/api/fotos-de-perfil/${userData.fotoPerfil}`}
               style={{
                 aspectRatio: "180/180",
                 objectFit: "cover",

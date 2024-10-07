@@ -17,7 +17,7 @@ export function Chat() {
   useEffect(() => {
     const fetchTaller = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/workshops/${receptorId}`);
+        const response = await fetch(`/api/workshops/${receptorId}`);
         if (!response.ok) throw new Error('Error al obtener el taller');
         const data = await response.json();
         setTaller(data.nombre);

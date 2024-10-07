@@ -18,13 +18,13 @@ const SearchBar = ({ usuario, setSearchQuery }) => {
   const newPath = currentPath.includes("descuentos") ? currentPath.split("/").slice(0, -2).join("/") : currentPath.split("/").slice(0, -1).join("/") ;
 
   const getTalleres = async () => {
-    const res = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/workshops`);
+    const res = await fetch(`/api/workshops`);
     const data = await res.json();
     return data;
   };
 
   const getProducts = async () => {
-    const res = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/products`);
+    const res = await fetch(`/api/products`);
     const data = await res.json();
     return data;
   };

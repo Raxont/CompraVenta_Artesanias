@@ -13,7 +13,7 @@ export const productoLoader = async ({ params }) => {
       // Obtener el ID del usuario desde /session-data
       const fetchUserId = async () => {
         try {
-          const response = await fetch('http://localhost:3001/users/session-data', {
+          const response = await fetch('/api/users/session-data', {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -36,7 +36,7 @@ export const productoLoader = async ({ params }) => {
       // Obtener los datos completos del usuario
       const fetchUserData = async (userId) => {
         try {
-          const response = await fetch(`http://localhost:3001/users/${userId}`, {
+          const response = await fetch(`/api/users/${userId}`, {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -68,7 +68,7 @@ export const productoLoader = async ({ params }) => {
       const userData = await fetchUserData(userId);
   
       // Llamada para obtener los detalles del producto
-      const resProduct = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/products/${params.productId}`);
+      const resProduct = await fetch(`/api/products/${params.productId}`);
       const dataProduct = await resProduct.json();
   
       // Devuelve los datos del producto y del usuario al componente
@@ -91,7 +91,7 @@ export function Producto() {
 
   const editFavourites = async (userId, productId) => {
     try {
-      const res = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/users/${change}/${userId}/${productId}`, {
+      const res = await fetch(`/api/users/${change}/${userId}/${productId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -110,7 +110,7 @@ export function Producto() {
 
   const addToCart = async (userId, productId) => {
     try {
-      const res = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/users/addToCart/${userId}`, {
+      const res = await fetch(`/api/users/addToCart/${userId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

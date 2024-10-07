@@ -7,7 +7,7 @@ const CouponCard = ({ arrive }) => {
   // Obtener el userId desde /session-data
   const fetchUserId = async () => {
     try {
-      const response = await fetch('http://localhost:3001/users/session-data', {
+      const response = await fetch('/api/users/session-data', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -34,7 +34,7 @@ const CouponCard = ({ arrive }) => {
   // Función para buscar si hay un cupón asignado para el usuario
   const fetchUserCoupon = async (userId) => {
     try {
-      const response = await fetch(`http://localhost:3001/coupons/user/${userId}`, {
+      const response = await fetch(`/api/coupons/user/${userId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

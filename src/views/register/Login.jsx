@@ -7,7 +7,7 @@ export function Login() {
   const navigate = useNavigate();
   const handleDiscordClick = () => {
 		const popup = window.open(
-			'http://localhost:3001/users/discord', // * Ruta para autenticación con Google
+			'/api/users/discord', // * Ruta para autenticación con Google
 			'targetWindow',
 			'width=950,height=900,menubar=no,location=no,resizable=no,scrollbars=no,status=no', // ? Configuración del popup
 		);
@@ -39,7 +39,7 @@ export function Login() {
   
   const handleGithubClick = () => {
     const popup = window.open(
-			'http://localhost:3001/users/github', // * Ruta para autenticación con Github
+			'/api/users/github', // * Ruta para autenticación con Github
 			'targetWindow',
 			'width=950,height=900,menubar=no,location=no,resizable=no,scrollbars=no,status=no', // ? Configuración del popup
 		);
@@ -71,7 +71,7 @@ export function Login() {
   
   const handleGoogleClick = () => {
 		const popup = window.open(
-				'http://localhost:3001/users/google', // * Ruta para autenticación con Gmail
+				'/api/users/google', // * Ruta para autenticación con Gmail
 				'targetWindow',
 				'width=950,height=900,menubar=no,location=no,resizable=no,scrollbars=no,status=no', // ? Configuración del popup
 			);

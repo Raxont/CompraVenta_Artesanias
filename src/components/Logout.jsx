@@ -10,7 +10,7 @@ const Logout = () => {
 	const handleLogout = async e => {
 		e.preventDefault();
 		try {
-			const response = await fetch('http://localhost:3001/users/logout', {
+			const response = await fetch('/api/users/logout', {
 				method: 'POST',
 				credentials: 'include',
 			});

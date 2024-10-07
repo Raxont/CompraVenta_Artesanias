@@ -5,7 +5,7 @@ import {LibretaIcon} from "../assets/libretaIcon.jsx";
 import PurchaseHistoryButton from "../components/PurchaseHistoryButton-chat";
 
 export const informacionTallerLoader = async ({ params }) => {
-    let res = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/educationalWorkshops/${params.id}`);
+    let res = await fetch(`/api/educationalWorkshops/${params.id}`);
     let data = await res.json();
     return data;
 };
@@ -18,7 +18,7 @@ export function InformacionTaller() {
     // Obtener el userId desde /session-data
     const fetchUserId = async () => {
         try {
-            const response = await fetch('http://localhost:3001/users/session-data', {
+            const response = await fetch('/api/users/session-data', {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -39,7 +39,7 @@ export function InformacionTaller() {
     // Verificar si el usuario ya está inscrito
     const checkInscripcion = async (userId) => {
         try {
-            const response = await fetch(`http://localhost:3001/users/${userId}`, {
+            const response = await fetch(`/api/users/${userId}`, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -72,7 +72,7 @@ export function InformacionTaller() {
 
         try {
             // Obtener los datos actuales del usuario, incluyendo su array de talleresInscritos
-            const userResponse = await fetch(`http://localhost:3001/users/${userId}`, {
+            const userResponse = await fetch(`/api/users/${userId}`, {
                 method: "GET",
                 credentials: "include",
                 headers: {
@@ -100,7 +100,7 @@ export function InformacionTaller() {
                 talleresInscritos: updatedTalleresInscritos, // Enviar el array completo actualizado
             };
 
-            const response = await fetch(`http://localhost:3001/users/${userId}`, {
+            const response = await fetch(`/api/users/${userId}`, {
                 method: 'PUT',
                 credentials: 'include',
                 headers: {

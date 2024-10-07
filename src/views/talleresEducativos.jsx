@@ -7,12 +7,12 @@ import { SearchEducationalWorkshops } from "../components/searchEducationalWorks
 import { useState } from 'react';
 
 export const tallerEducativoLoader = async () => {
-    const resUser = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/users/session-data`, {
+    const resUser = await fetch(`/api/users/session-data`, {
         method: 'GET',
         credentials: 'include'
     });
     const dataUser = await resUser.json();
-    let res = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/educationalWorkshops/`);
+    let res = await fetch(`/api/educationalWorkshops/`);
     let data = await res.json();
     return { talleresEducativos: data, usuario: dataUser }
 }

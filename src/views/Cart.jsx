@@ -8,7 +8,7 @@ import {TrianguloIzquierdo} from "../assets/trianguloIzquierdo.jsx";
 
 export const cartLoader = async () => {
   try {
-    const resUser = await fetch(`http://localhost:${import.meta.env.VITE_PORT_BACKEND}/users/session-data`, {
+    const resUser = await fetch(`/api/users/session-data`, {
       method: 'GET',
       credentials: 'include'
     });
@@ -36,7 +36,7 @@ export function Cart() {
   // Obtener el userId desde /session-data
   const fetchUserId = async () => {
     try {
-      const response = await fetch('http://localhost:3001/users/session-data', {
+      const response = await fetch('/api/users/session-data', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -57,7 +57,7 @@ export function Cart() {
   // Función para buscar si hay un cupón asignado para el usuario
   const fetchUserCoupon = async (userId) => { //ESTA FUNCION NO SE UTILIZA AQUI. ESTA OBSOLETA
     try {
-      const response = await fetch(`http://localhost:3001/coupons/user/${userId}`, {
+      const response = await fetch(`/api/coupons/user/${userId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ export function Cart() {
     try {
       let res = undefined;
       if (cuponCode){
-        res = await fetch(`http://localhost:3001/users/cart/`, {
+        res = await fetch(`/api/users/cart/`, {
           method: 'POST', 
           headers: {
             'Content-Type': 'application/json',
@@ -91,7 +91,7 @@ export function Cart() {
         });
         
       }else {
-        res = await fetch(`http://localhost:3001/users/cart/`, {
+        res = await fetch(`/api/users/cart/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -156,7 +156,7 @@ export function Cart() {
     
     // Realiza la llamada a la API para procesar la compra
     try {
-      const response = await fetch('http://localhost:3001/requests', {
+      const response = await fetch('/api/requests', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

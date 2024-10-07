@@ -36,7 +36,7 @@ function SideBar({ user, iconUser }) {
   useEffect(() => {
     const fetchUserId = async () => {
       try {
-        const response = await fetch('http://localhost:3001/users/session-data', {
+        const response = await fetch('/api/users/session-data', {
           method: 'GET',
           credentials: 'include',
           headers: {
@@ -58,7 +58,7 @@ function SideBar({ user, iconUser }) {
   
     const fetchUserData = async (id) => {
       try {
-        const response = await fetch(`http://localhost:3001/users/${id}`, {
+        const response = await fetch(`/api/users/${id}`, {
           method: 'GET',
           credentials: 'include',
           headers: {
@@ -99,7 +99,7 @@ function SideBar({ user, iconUser }) {
       {/* Sección de la imagen del perfil y nombre */}
       <div className="flex flex-row gap-5 items-center mb-8">
         <img
-          src={`http://localhost:3001/fotos-de-perfil/${userData.fotoPerfil}`}
+          src={`/api/fotos-de-perfil/${userData.fotoPerfil}`}
           alt="User Profile"
           className="w-[6rem] h-[6rem] rounded-full border-2 border-red-800 dark:border-0"
         />
