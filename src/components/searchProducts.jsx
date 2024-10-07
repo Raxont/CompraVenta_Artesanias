@@ -1,7 +1,7 @@
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from "react-router-dom";
 import { FilterIcon } from "../assets/filterIcon.jsx";
 import { LupaIcon } from "../assets/magnifyingGlassIcon.jsx";
-import { useState, useEffect, useRef } from 'react';
-import { Link, useLocation } from "react-router-dom";
 
 export function SearchProducts ({ usuario, setSearchQuery }) {
     const [searchQueryLocal, setSearchQueryLocal] = useState('');
@@ -40,12 +40,12 @@ export function SearchProducts ({ usuario, setSearchQuery }) {
 
     return (
         <>
-            <div className="w-[100%] h-[47px] flex justify-between items-center">
+            <div className="w-[100%] h-[10%] flex justify-between items-center">
                 <div className="h-[42px] w-[88%] p-[2.5%] bg-primary dark:bg-dark-quintier rounded-lg flex items-center">
-                    <LupaIcon style="h-[120%] text-light dark:text-dark-bg" alt="lupaIcon"/>
+                    <LupaIcon style="h-[1.5rem] text-light dark:text-dark-bg" alt="lupaIcon"/>
                     <input
                         type="text"
-                        className="bg-transparent text-white placeholder-quintier dark:placeholder-dark-quintier w-full border-none focus:ring-transparent"
+                        className="bg-transparent text-white dark:text-dark-bg placeholder-quintier dark:placeholder-dark-quintier w-full border-none focus:ring-transparent"
                         placeholder="Buscar producto o palabra clave..."
                         value={searchQueryLocal}
                         onChange={handleInputChange}
