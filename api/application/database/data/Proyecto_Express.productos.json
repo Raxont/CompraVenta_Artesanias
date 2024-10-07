@@ -1,0 +1,114 @@
+[{
+  "_id": {
+    "$oid": "650f4c29a5f1bc1234567890"
+  },
+  "nombre": "Alpargatas de Fique",
+  "descripcion": "Alpargatas artesanales elaboradas a mano con fique, un material natural típico de la región de Santander. Perfectas para el uso diario y cómodas para cualquier ocasión.",
+  "precio": {
+    "$numberDecimal": "45.00"
+  },
+  "categoria": "Calzado",
+  "fotos": [
+    "/imagenes/productos/alpargatas_fique_1.jpg",
+    "/imagenes/productos/alpargatas_fique_2.jpg"
+  ],
+  "stock": 100,
+  "artesanoId": {
+    "$oid": "650f4c29a5f1bc1234567890"
+  }
+},
+{
+  "_id": {
+    "$oid": "650f4c29a5f1bc0987654322"
+  },
+  "nombre": "Mochila de Fique",
+  "descripcion": "Mochila hecha a mano con fique, ideal para llevar tus pertenencias de manera práctica y estilizada. Su diseño combina tradición y funcionalidad, perfectas para el uso diario o para actividades al aire libre.",
+  "precio": {
+    "$numberDecimal": "75.00"
+  },
+  "categoria": "Bolsos",
+  "fotos": [
+    "/imagenes/productos/mochila_fique_1.jpg",
+    "/imagenes/productos/mochila_fique_2.jpg"
+  ],
+  "stock": 50,
+  "artesanoId": {
+    "$oid": "650f4c29a5f1bc1234567890"
+  }
+},
+{
+  "_id": {
+    "$oid": "650f4c29a5f1bc0987654323"
+  },
+  "nombre": "Tapete de Fique",
+  "descripcion": "Tapete artesanal tejido a mano con fique, ideal para decorar cualquier espacio de tu hogar. Su diseño único y colores vibrantes aportan un toque especial a tu decoración.",
+  "precio": {
+    "$numberDecimal": "120.00"
+  },
+  "categoria": "Decoración",
+  "fotos": [
+    "/imagenes/productos/tapete_fique_1.jpg",
+    "/imagenes/productos/tapete_fique_2.jpg"
+  ],
+  "stock": 30,
+  "artesanoId": {
+    "$oid": "650f4c29a5f1bc1234567890"
+  }
+},
+{
+  "_id": {
+    "$oid": "650f4c29a5f1bc0987654324"
+  },
+  "nombre": "Sombrero Vueltiao",
+  "descripcion": "Sombrero Vueltiao, elaborado a mano por artesanos de la región. Ideal para protegerse del sol con estilo y tradición. Cada pieza es única y refleja la cultura local.",
+  "precio": {
+    "$numberDecimal": "85.00"
+  },
+  "categoria": "Accesorios",
+  "fotos": [
+    "/imagenes/productos/sombrero_vueltiao_1.jpg",
+    "/imagenes/productos/sombrero_vueltiao_2.jpg"
+  ],
+  "stock": 40,
+  "artesanoId": {
+    "$oid": "650f4c29a5f1bc1234567890"
+  }
+},
+{
+  "_id": {
+    "$oid": "650f4c29a5f1bc0987654325"
+  },
+  "nombre": "Mantel Individual de Fique",
+  "descripcion": "Mantel individual elaborado con fique, perfecto para dar un toque rústico a tu mesa. Ideal para ocasiones especiales o para el uso diario.",
+  "precio": {
+    "$numberDecimal": "35.00"
+  },
+  "categoria": "Hogar",
+  "fotos": [
+    "/imagenes/productos/mantel_individual_fique_1.jpg",
+    "/imagenes/productos/mantel_individual_fique_2.jpg"
+  ],
+  "stock": 60,
+  "artesanoId": {
+    "$oid": "650f4c29a5f1bc1234567890"
+  }
+},
+{
+  "_id": {
+    "$oid": "650f4c29a5f1bc0987654326"
+  },
+  "nombre": "Bolso de Fique",
+  "descripcion": "Bolso artesanal de fique, ideal para llevar tus cosas con un toque de estilo. Hecho a mano, combina durabilidad y belleza, perfecto para el día a día.",
+  "precio": {
+    "$numberDecimal": "65.00"
+  },
+  "categoria": "Bolsos",
+  "fotos": [
+    "/imagenes/productos/bolso_fique_1.jpg",
+    "/imagenes/productos/bolso_fique_2.jpg"
+  ],
+  "stock": 45,
+  "artesanoId": {
+    "$oid": "650f4c29a5f1bc1234567890"
+  }
+}]

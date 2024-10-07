@@ -1,0 +1,76 @@
+[{
+  "_id": {
+    "$oid": "650f4c29a5f1bc1234567890"
+  },
+  "nombre": "Juan Pérez",
+  "correo": "juan.perez@example.com",
+  "contraseña": "$2b$10$EixZaYVK1fsbw1ZfbX3OXe.P/UN5iQHQO.9m8fQWC6Gqj.23gk.rG",
+  "fotoPerfil": "/imagenes/perfil/juan_perez.jpg",
+  "direccion": "Calle 123, Ciudad, País",
+  "telefono": "1234567890",
+  "tipo": "comprador",
+  "favoritos": {
+    "talleres": [
+      {
+        "$oid": "650f4c29a5f1bc9876543210"
+      },
+      {
+        "$oid": "650f4c29a5f1bc0987654321"
+      }
+    ],
+    "productos": [
+      {
+        "$oid": "650f4c29a5f1bc1234321098"
+      },
+      {
+        "$oid": "650f4c29a5f1bc8765432109"
+      }
+    ]
+  },
+  "compras": [
+    {
+      "$oid": "650f4c29a5f1bc8765432109"
+    }
+  ],
+  "talleresInscritos": [
+    {
+      "$oid": "650f4c29a5f1bc1234321098"
+    }
+  ],
+  "cupones": [
+    {
+      "$oid": "650f4c29a5f1bc0987651234"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "650f4c29a5f1bc1234567891"
+  },
+  "nombre": "María López",
+  "correo": "maria.lopez@example.com",
+  "contraseña": "$2b$10$J9f7asxC8N/yxP8zXU3TTeQvVt3NnYv9p9D0v/JG23OTjMht1s1iG",
+  "fotoPerfil": "/imagenes/perfil/maria_lopez.jpg",
+  "direccion": "Avenida Principal 456, Ciudad, País",
+  "telefono": "0987654321",
+  "tipo": "comprador",
+  "favoritos": {
+    "talleres": [
+      {
+        "$oid": "650f4c29a5f1bc9876543210"
+      }
+    ],
+    "productos": [
+      {
+        "$oid": "650f4c29a5f1bc1234321098"
+      }
+    ]
+  },
+  "compras": [
+    {
+      "$oid": "650f4c29a5f1bc8765432109"
+    }
+  ],
+  "talleresInscritos": [],
+  "cupones": []
+}]

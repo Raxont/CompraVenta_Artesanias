@@ -1,0 +1,36 @@
+{
+    "$jsonSchema": {
+      "bsonType": "object",
+      "required": ["codigo", "descuento", "tipo", "fechaExpiracion"],
+      "properties": {
+        "_id": {
+          "bsonType": "objectId",
+          "description": "Identificador único del cupón"
+        },
+        "codigo": {
+          "bsonType": "string",
+          "minLength": 1,
+          "description": "Código del cupón, requerido"
+        },
+        "descuento": {
+          "bsonType": "decimal",
+          "minimum": 0.01,
+          "description": "Valor del descuento del cupón, debe ser mayor que 0"
+        },
+        "tipo": {
+          "bsonType": "string",
+          "enum": ["general", "asignado"],
+          "description": "Tipo de cupón, debe ser 'general' o 'asignado a usuario'"
+        },
+        "fechaExpiracion": {
+          "bsonType": "date",
+          "description": "Fecha de expiración del cupón, requerida"
+        },
+        "usuarioId": {
+          "bsonType": "objectId",
+          "description": "Identificador del usuario al que está asignado el cupón, opcional, referencia a 'Usuarios'"
+        }
+      }
+    }
+  }
+  

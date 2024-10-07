@@ -1,0 +1,30 @@
+{
+    "$jsonSchema": {
+      "bsonType": "object",
+      "required": ["remitenteId", "receptorId", "contenido", "fecha"],
+      "properties": {
+        "_id": {
+          "bsonType": "objectId",
+          "description": "Identificador único del mensaje"
+        },
+        "remitenteId": {
+          "bsonType": "objectId",
+          "description": "Identificador del usuario que envió el mensaje, referencia a 'Usuarios'"
+        },
+        "receptorId": {
+          "bsonType": "objectId",
+          "description": "Identificador del usuario que recibe el mensaje, referencia a 'Usuarios'"
+        },
+        "contenido": {
+          "bsonType": "string",
+          "minLength": 1,
+          "description": "Contenido del mensaje, no puede estar vacío"
+        },
+        "fecha": {
+          "bsonType": "date",
+          "description": "Fecha y hora en que se envió el mensaje"
+        }
+      }
+    }
+  }
+  

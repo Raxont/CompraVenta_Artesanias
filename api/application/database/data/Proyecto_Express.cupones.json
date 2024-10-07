@@ -1,0 +1,16 @@
+[{
+  "_id": {
+    "$oid": "650f4c29a5f1bc0987654329"
+  },
+  "codigo": "DESCUENTO15",
+  "descuento": {
+    "$numberDecimal": "0.15"
+  },
+  "tipo": "asignado",
+  "fechaExpiracion": {
+    "$date": "2024-10-12T00:00:00.000Z"
+  },
+  "usuarioId": {
+    "$oid": "650f4c29a5f1bc1234567891"
+  }
+}]

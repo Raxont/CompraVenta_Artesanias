@@ -1,0 +1,56 @@
+{
+    "$jsonSchema": {
+      "bsonType": "object",
+      "required": ["usuarioId", "productos", "total", "fecha", "estado"],
+      "properties": {
+        "_id": {
+          "bsonType": "objectId",
+          "description": "Identificador único del pedido"
+        },
+        "usuarioId": {
+          "bsonType": "objectId",
+          "description": "Identificador del usuario que realizó el pedido, referencia a 'Usuarios'"
+        },
+        "productos": {
+          "bsonType": "array",
+          "minItems": 1,  
+          "items": {
+            "bsonType": "object",
+            "required": ["productoId", "cantidad", "precio"],
+            "properties": {
+              "productoId": {
+                "bsonType": "objectId",
+                "description": "Identificador del producto, referencia a 'Productos'"
+              },
+              "cantidad": {
+                "bsonType": "int",
+                "minimum": 1,
+                "description": "Cantidad del producto, debe ser un entero mayor o igual a 1"
+              },
+              "precio": {
+                "bsonType": "decimal",
+                "minimum": 0.01,
+                "description": "Precio del producto al momento de la compra, debe ser mayor que 0"
+              }
+            }
+          },
+          "description": "Lista de productos en el pedido"
+        },
+        "total": {
+          "bsonType": "decimal",
+          "minimum": 0.01,
+          "description": "Total del pedido, debe ser mayor que 0"
+        },
+        "fecha": {
+          "bsonType": "date",
+          "description": "Fecha en que se realizó el pedido"
+        },
+        "estado": {
+          "bsonType": "string",
+          "enum": ["pendiente", "enviado", "entregado"],
+          "description": "Estado del pedido, debe ser 'pendiente', 'enviado' o 'entregado'"
+        }
+      }
+    }
+  }
+  

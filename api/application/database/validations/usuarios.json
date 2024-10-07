@@ -1,0 +1,100 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": [
+      "id",
+      "nombre",
+      "correo",
+      "contraseña",
+      "tipo",
+      "fotoPerfil",
+      "direccion",
+      "telefono",
+      "favoritos",
+      "compras",
+      "talleresInscritos",
+      "cupones"
+    ],
+    "properties": {
+      "id": {
+        "bsonType": "int",
+        "description": "Identificador único del usuario"
+      },
+      "nombre": {
+        "bsonType": "string",
+        "minLength": 1,
+        "description": "Nombre del usuario, requerido"
+      },
+      "correo": {
+        "bsonType": "string",
+        "pattern": "^.+@.+\\..+$",
+        "description": "Correo electrónico del usuario, debe ser único y válido"
+      },
+      "contraseña": {
+        "bsonType": "string",
+        "minLength": 8,
+        "description": "Contraseña del usuario, debe ser un hash y tener al menos 8 caracteres"
+      },
+      "fotoPerfil": {
+        "bsonType": "string",
+        "description": "Ruta local de la foto de perfil del usuario"
+      },
+      "direccion": {
+        "bsonType": "string",
+        "description": "Dirección del usuario"
+      },
+      "telefono": {
+        "bsonType": "string",
+        "pattern": "^[0-9]{10}$",
+        "description": "Número de teléfono del usuario, debe contener 10 dígitos"
+      },
+      "tipo": {
+        "bsonType": "string",
+        "enum": [
+          "comprador",
+          "artesano"
+        ],
+        "description": "Tipo de usuario, debe ser 'comprador' o 'artesano'"
+      },
+      "favoritos": {
+        "bsonType": "object",
+        "required": ["productos"],
+        "properties": {
+          "productos": {
+            "bsonType": "array",
+            "items": {
+              "bsonType": "objectId",
+              "description": "Lista de identificadores de productos favoritos"
+            },
+            "description": "Lista de productos favoritos del usuario"
+          }
+        },
+        "description": "Lista de productos y talleres favoritos del usuario"
+      },
+      "compras": {
+        "bsonType": "array",
+        "items": {
+          "bsonType": "objectId",
+          "description": "Lista de identificadores de compras realizadas"
+        },
+        "description": "Compras realizadas por el usuario"
+      },
+      "talleresInscritos": {
+        "bsonType": "array",
+        "items": {
+          "bsonType": "objectId",
+          "description": "Lista de talleres en los que el usuario está inscrito"
+        },
+        "description": "Talleres en los que el usuario está inscrito"
+      },
+      "cupones": {
+        "bsonType": "array",
+        "items": {
+          "bsonType": "objectId",
+          "description": "Lista de cupones asignados al perfil del usuario"
+        },
+        "description": "Cupones asignados al perfil del usuario"
+      }
+    }
+  }
+}

@@ -1,0 +1,105 @@
+[{
+  "_id": {
+    "$oid": "650f4c29a5f1bc0987654330"
+  },
+  "remitenteId": {
+    "$oid": "650f4c29a5f1bc1234567890"
+  },
+  "receptorId": {
+    "$oid": "650f4c29a5f1bc1234567891"
+  },
+  "contenido": "Hola, estoy interesado en tus alpargatas. ¿Tienes disponibilidad?",
+  "fecha": {
+    "$date": "2024-09-20T09:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "650f4c29a5f1bc0987654331"
+  },
+  "remitenteId": {
+    "$oid": "650f4c29a5f1bc1234567891"
+  },
+  "receptorId": {
+    "$oid": "650f4c29a5f1bc1234567890"
+  },
+  "contenido": "¡Hola! Sí, tengo varias alpargatas disponibles. ¿Te gustaría ver algunas fotos?",
+  "fecha": {
+    "$date": "2024-09-20T09:05:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "650f4c29a5f1bc0987654332"
+  },
+  "remitenteId": {
+    "$oid": "650f4c29a5f1bc1234567890"
+  },
+  "receptorId": {
+    "$oid": "650f4c29a5f1bc1234567891"
+  },
+  "contenido": "Sí, me encantaría ver las fotos. También, ¿cuáles son los precios?",
+  "fecha": {
+    "$date": "2024-09-20T09:10:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "650f4c29a5f1bc0987654333"
+  },
+  "remitenteId": {
+    "$oid": "650f4c29a5f1bc1234567891"
+  },
+  "receptorId": {
+    "$oid": "650f4c29a5f1bc1234567890"
+  },
+  "contenido": "Aquí tienes algunas fotos de las alpargatas. Los precios van desde $30 hasta $50 dependiendo del diseño.",
+  "fecha": {
+    "$date": "2024-09-20T09:15:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "650f4c29a5f1bc0987654334"
+  },
+  "remitenteId": {
+    "$oid": "650f4c29a5f1bc1234567890"
+  },
+  "receptorId": {
+    "$oid": "650f4c29a5f1bc1234567891"
+  },
+  "contenido": "Me gustan mucho las alpargatas de $40. ¿Puedo hacer un pedido?",
+  "fecha": {
+    "$date": "2024-09-20T09:20:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "650f4c29a5f1bc0987654335"
+  },
+  "remitenteId": {
+    "$oid": "650f4c29a5f1bc1234567891"
+  },
+  "receptorId": {
+    "$oid": "650f4c29a5f1bc1234567890"
+  },
+  "contenido": "Claro, solo necesito tu dirección de envío y te enviaré la información de pago.",
+  "fecha": {
+    "$date": "2024-09-20T09:25:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "650f4c29a5f1bc0987654336"
+  },
+  "remitenteId": {
+    "$oid": "650f4c29a5f1bc1234567890"
+  },
+  "receptorId": {
+    "$oid": "650f4c29a5f1bc1234567891"
+  },
+  "contenido": "Mi dirección es Calle 123, Bogotá. Espero la información de pago. ¡Gracias!",
+  "fecha": {
+    "$date": "2024-09-20T09:30:00.000Z"
+  }
+}]

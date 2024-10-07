@@ -1,0 +1,35 @@
+[{
+  "_id": {
+    "$oid": "650f4c29a5f1bc0987654327"
+  },
+  "usuarioId": {
+    "$oid": "650f4c29a5f1bc1234567891"
+  },
+  "productos": [
+    {
+      "productoId": {
+        "$oid": "650f4c29a5f1bc1234567890"
+      },
+      "cantidad": 2,
+      "precio": {
+        "$numberDecimal": "30000"
+      }
+    },
+    {
+      "productoId": {
+        "$oid": "650f4c29a5f1bc0987654323"
+      },
+      "cantidad": 1,
+      "precio": {
+        "$numberDecimal": "40000"
+      }
+    }
+  ],
+  "total": {
+    "$numberDecimal": "70000"
+  },
+  "fecha": {
+    "$date": "2024-09-20T14:30:00.000Z"
+  },
+  "estado": "enviado"
+}]

@@ -1,0 +1,64 @@
+{
+    "$jsonSchema": {
+      "bsonType": "object",
+      "required": ["nombre", "descripcion", "modalidad", "fechaInicio", "fechaFin", "duracion", "artesanoId"],
+      "properties": {
+        "_id": {
+          "bsonType": "objectId",
+          "description": "Identificador único del taller"
+        },
+        "nombre": {
+          "bsonType": "string",
+          "minLength": 1,
+          "description": "Nombre del taller, requerido"
+        },
+        "descripcion": {
+          "bsonType": "string",
+          "minLength": 10,
+          "description": "Descripción del taller, requerida"
+        },
+        "modalidad": {
+          "bsonType": "string",
+          "enum": ["presencial", "virtual"],
+          "description": "Modalidad del taller, debe ser 'presencial' o 'virtual'"
+        },
+        "fechaInicio": {
+          "bsonType": "date",
+          "description": "Fecha de inicio del taller, requerida"
+        },
+        "fechaFin": {
+          "bsonType": "date",
+          "description": "Fecha de fin del taller, requerida"
+        },
+        "duracion": {
+          "bsonType": "string",
+          "description": "Duración del taller, requerida"
+        },
+        "materialesProporcionados": {
+          "bsonType": "array",
+          "items": {
+            "bsonType": "string",
+            "description": "Material proporcionado por el taller"
+          },
+          "description": "Lista de materiales proporcionados por el taller"
+        },
+        "materialesRequeridos": {
+          "bsonType": "array",
+          "items": {
+            "bsonType": "string",
+            "description": "Material que los participantes deben traer"
+          },
+          "description": "Lista de materiales que los participantes deben traer"
+        },
+        "documental": {
+          "bsonType": "string",
+          "description": "URL del documental sobre el taller (opcional)"
+        },
+        "artesanoId": {
+          "bsonType": "objectId",
+          "description": "Identificador del artesano que organiza el taller, referencia a 'Usuarios'"
+        }
+      }
+    }
+  }
+  

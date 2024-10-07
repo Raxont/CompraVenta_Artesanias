@@ -1,14 +1,25 @@
-// src/ButtonTheme.jsx
-import React, { useEffect, useState } from 'react';
-import { toggleTheme } from './../tools/theme'; // Importa la función de alternar tema
+import { useEffect, useState } from 'react';
+import { toggleTheme } from './../tools/theme'; // Importa las funciones para manejar el tema
 
 const ButtonTheme = () => {
   const [darkMode, setDarkMode] = useState(false);
 
+  // Inicializa el tema y sincroniza el estado del botón con el almacenamiento local
   useEffect(() => {
-    // Inicializa el estado en función del tema almacenado en localStorage o preferencia del sistema
-    const isDarkMode = localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const isDarkMode = localStorage.theme === 'dark' || 
+      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    
     setDarkMode(isDarkMode);
+
+    // Escucha cambios en el modo preferido del sistema (p.ej., si el usuario lo cambia manualmente)
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e) => setDarkMode(e.matches);
+    
+    mediaQuery.addEventListener('change', handleChange);
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange);
+    };
   }, []);
 
   const handleToggle = () => {
@@ -21,12 +32,12 @@ const ButtonTheme = () => {
       id="theme-toggle"
       type="button"
       onClick={handleToggle}
-      className="bg-white dark:bg-neutral-700 text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus:ring-4 focus:ring-neutral-200 dark:focus:ring-neutral-700 rounded-lg text-sm p-2"
+      className="bg-white dark:bg-neutral-700 text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus:ring-4 focus:ring-neutral-200 dark:focus:ring-neutral-700 rounded-lg text-sm p-2 w-[15%] right-3 absolute"
     >
       {/* Icono de modo oscuro */}
       <svg
         id="theme-toggle-dark-icon"
-        className={`w-5 h-5 ${darkMode ? '' : 'hidden'}`}
+        className={`w-[1.7rem] h-5 ${darkMode ? '' : 'hidden'}`}
         fill="currentColor"
         viewBox="0 0 20 20"
         xmlns="http://www.w3.org/2000/svg"
@@ -36,7 +47,7 @@ const ButtonTheme = () => {
       {/* Icono de modo claro */}
       <svg
         id="theme-toggle-light-icon"
-        className={`w-5 h-5 ${darkMode ? 'hidden' : ''}`}
+        className={`w-[1.5rem] h-5 ${darkMode ? 'hidden' : ''}`}
         fill="currentColor"
         viewBox="0 0 20 20"
         xmlns="http://www.w3.org/2000/svg"
