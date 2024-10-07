@@ -62,7 +62,7 @@ function CheckPay() {
 
         {/* Botón de regreso */}
         <Link
-          to="/"
+          to="/home"
           className="bg-gray-800 text-white py-2 px-6 rounded"
         >
           Regresar al inicio
