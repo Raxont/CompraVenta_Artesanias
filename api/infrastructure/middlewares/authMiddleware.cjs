@@ -8,8 +8,6 @@ const jwtUtils = require("../../utils/jwtUtils.cjs");
  * @param {Function} next - Función para pasar al siguiente middleware.
  */
 exports.authenticateToken = (req, res, next) => {
-  console.log("🚀 ~ UserController ~ addToCart ~ req:", req.session)
-
   const users = req.session.passport.user;
   if (req.session && users) {
     // Verifica si existe una sesión de usuario

@@ -99,7 +99,6 @@ class ProductsController {
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-            console.log(req.params.categoria)
             const products = await this.productsService.getProductsByCategoryForDiscounts(req.params.categoria);
             res.status(200).json(products);
         } catch (error) {

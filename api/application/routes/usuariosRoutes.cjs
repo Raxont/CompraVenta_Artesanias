@@ -349,7 +349,6 @@ router.post("/upload-profile-picture",  async (req, res) => {
   
         // Encuentra al usuario en la base de datos
         const user = await userController.findUserById(userId);
-        console.log("🚀 ~ file.mv ~ user:", user)
         if (!user) {
           return res.status(404).json({ message: "Usuario no encontrado." });
         }

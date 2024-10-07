@@ -11,7 +11,6 @@ class Usuarios {
     }
 
     async findByObjectId(id) {
-        console.log("Entra a buscar le usuario en el modelo")
         let obj = ConnectToDatabase.instanceConnect;
         const collection = obj.db.collection('usuarios');
         const [res] = await collection.find({ _id: id }).toArray();
@@ -19,7 +18,6 @@ class Usuarios {
     }
 
     async findById(id) {
-        console.log("Entra a buscar le usuario en el modelo")
         let obj = ConnectToDatabase.instanceConnect;
         const collection = obj.db.collection('usuarios');
         const [res] = await collection.find({ id: id }).toArray();

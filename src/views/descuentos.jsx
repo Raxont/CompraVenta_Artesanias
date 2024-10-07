@@ -30,7 +30,6 @@ export function Descuentos() {
 
   const location = useLocation();
   const currentPath = location.pathname;
-  console.log(usuario)
 
   // Modificación del path sin agregar ID del usuario
   const newPath = currentPath.split("/").slice(0, -1).join("/");
@@ -87,7 +86,6 @@ export function Descuentos() {
           </div>
     
           <div className="w-[100vw] h-[4.7vh] bg-primary dark:bg-dark-tertiary flex overflow-scroll border-b-4 border-bg dark:border-dark-bg">
-            {console.log(newPath, categories[6].nombre )}
             {categories.map((categorie, index) => {
               return (
                 <Link

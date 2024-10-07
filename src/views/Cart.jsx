@@ -77,7 +77,6 @@ export function Cart() {
   // Función para obtener el carrito del usuario
   const getCart = async (userId) => {
     try {
-      console.log(cuponCode);
       let res = undefined;
       if (cuponCode){
         
@@ -93,7 +92,6 @@ export function Cart() {
         });
         
       }else {
-        console.log('aqui no debia ahaber cupon')
         res = await fetch(`http://localhost:3001/users/cart/${userId}}`, {
        
         method: 'GET',

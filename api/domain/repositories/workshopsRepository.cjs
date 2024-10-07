@@ -1,5 +1,5 @@
 // Contiene la interfaz para interactuar con la base de datos o cualquier otro tipo de almacenamiento de datos.
-const Workshop = require('../models/talleresModel.cjs');
+const Workshop = require('../models/TalleresModel.cjs');
 const { ObjectId } = require("mongodb"); // Importa ObjectId para trabajar con IDs de MongoDB
 const ConnectToDatabase = require("../../infrastructure/database/mongodb.cjs"); // Importa la conexión a la base de datos MongoDB
 

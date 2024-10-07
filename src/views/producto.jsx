@@ -88,7 +88,6 @@ export function Producto() {
     if (isFav) setChange("removeFavourite");
     else setChange("addFavourite");
   }, [isFav]);
-  console.log(isFav)
 
   const editFavourites = async (userId, productId) => {
     try {

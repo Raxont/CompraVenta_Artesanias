@@ -27,7 +27,6 @@ export const tiendasLoader = async() => {
 
 export function Tiendas () {
     const  { tiendas, usuario, error, message } = useLoaderData();
-    console.log(tiendas)
     const [searchQuery, setSearchQuery] = useState('');
 
     return (

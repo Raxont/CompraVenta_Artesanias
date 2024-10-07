@@ -1,12 +1,12 @@
+import { useState } from 'react';
 import { Link, useLoaderData } from "react-router-dom";
-import {TrianguloIzquierdo} from "../assets/trianguloIzquierdo.jsx";
-import {TrianguloDerecho} from "../assets/trianguloDerecho.jsx";
-import { SearchProducts } from "../components/searchProducts";
-import { ProductoCard } from "../components/productoCard";
+import { TrianguloDerecho } from "../assets/trianguloDerecho.jsx";
+import { TrianguloIzquierdo } from "../assets/trianguloIzquierdo.jsx";
 import PurchaseHistoryButton from "../components/PurchaseHistoryButton-chat";
 import Tittle from "../components/Tittle";
+import { ProductoCard } from "../components/productoCard";
+import { SearchProducts } from "../components/searchProducts";
 import { StoreChatIcon } from "../components/storeChatIcon";
-import { useState } from 'react';
 
 export const tiendaLoader = async ({params}) => {
     try {
@@ -46,7 +46,11 @@ export function Tienda () {
             </div>
             <div className="w-[100vw] h-[10.2vh] mb-5 relative">
                 <Tittle tittle="Artesanías"/>
-                <StoreChatIcon style="h-[55%] absolute right-2 bottom-2.5 text-secondary dark:text-dark-bg"/>
+                {productos.map((producto, index) => {
+                    return<Link to={`/chat/${producto.producto_taller}`} >
+                    <StoreChatIcon style="h-[55%] absolute right-2 bottom-2.5 text-secondary dark:text-dark-bg"/>
+                    </Link>
+                })} 
             </div>
             <main className="h-[50.3vh] w-[100vw] px-[7%] flex flex-col justify-between gap-5">
                 <SearchProducts  usuario={usuario.userId} setSearchQuery={setSearchQuery}/>

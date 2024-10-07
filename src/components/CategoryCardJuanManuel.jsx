@@ -5,7 +5,6 @@ const CustomComponent = ({ title, icon }) => {
   const currentPath = location.pathname;
 
   const newPath = currentPath.split('/').slice(0, -1).join('/') + "/" + title;
-  console.log(newPath)
 
   return (
     <Link to={newPath} className="h-[100%] rounded-md flex flex-col items-center p-1 mx-[50px]">

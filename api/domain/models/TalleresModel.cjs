@@ -98,7 +98,8 @@ class Talleres{
                   "producto_ancho": "$productos.ancho",
                   "producto_descuento": "$productos.descuento",
                   "producto_envio": "$productos.envio",
-                  "producto_promocion": "$productos.promocion"
+                  "producto_promocion": "$productos.promocion",
+                  "producto_taller": "$productos.tallerId",
                 }
               }
             }

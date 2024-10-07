@@ -6,7 +6,6 @@ const Compras = () => {
     const [product, setProduct] = useState([]); // Inicializar como null
     const getProduct = async () => {
         const res = await fetch(`api/requests/user/${"650f4c29a5f1bc1234567892"}`);
-        console.log("res",res);
         const data = await res.json();
         return data;
     };
@@ -18,8 +17,6 @@ const Compras = () => {
         };
         fetchData();
       }, []);
-
-      console.log("product",product);
 
   return (
     <div>

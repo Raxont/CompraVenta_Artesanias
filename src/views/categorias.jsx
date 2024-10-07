@@ -27,7 +27,6 @@ export const categoriasLoader = async ({params}) => {
 export function Categorias () {
     const {productos, usuario, error, message} = useLoaderData()
     const [searchQuery, setSearchQuery] = useState('');
-    console.log(productos)
     return (
         <>
             <section className='h-[10.2vh] w-[100vw] mb-5'>

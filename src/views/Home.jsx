@@ -25,7 +25,6 @@ export const homeLoader = async () => {
 //<CategoryCard tittle="Textilería" iconPath="/Textilería.svg" />
 export function Home() {
   const { usuario, error, message } = useLoaderData();
-  console.log(usuario)
   
   const [searchQuery, setSearchQuery] = useState('');
   

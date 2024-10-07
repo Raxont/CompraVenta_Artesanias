@@ -52,7 +52,6 @@ const SearchBar = ({ usuario, setSearchQuery }) => {
     : [];
 
   const sideBarRef = useRef(null);
-  console.log(newPath)
 
   const toggleSideBar = () => {
     setIsSideBarVisible(!isSideBarVisible);
@@ -120,7 +119,6 @@ const SearchBar = ({ usuario, setSearchQuery }) => {
           )}
           
           <h2 className="text-lg font-semibold mt-4">Productos</h2>
-          {console.log(usuario)}
           {filteredProducts.length > 0 ? (
             <ul>
               {filteredProducts.map((product) => (

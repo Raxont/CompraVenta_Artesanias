@@ -37,7 +37,6 @@ export function SearchEducationalWorkshops ({ usuario, setSearchQuery }) {
         setSearchQuery(value); // Actualizar el valor en el componente padre
         setSearchQueryLocal(value); // Actualizar el valor localmente
     };
-    console.log(usuario)
 
     return (
         <>

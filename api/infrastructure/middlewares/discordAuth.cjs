@@ -12,7 +12,6 @@ passport.use(
       scope: ["identify", "email"], // Campos del perfil a solicitar
     },
     async (accessToken, refreshToken, profile, done) => {
-      console.log("🚀 ~ profile:", profile);
       try {
         // Conecta a la base de datos
         const dbConnection = new ConnectToDatabase();
