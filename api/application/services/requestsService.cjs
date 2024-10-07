@@ -3,12 +3,14 @@ const { ObjectId } = require("mongodb");
 const RequestRepository = require("../../domain/repositories/requestsRepository.cjs");
 const PaymentsRepository = require("../../domain/repositories/paymentsRepository.cjs");
 const UserRepository = require("../../domain/repositories/usuariosRepository.cjs");
+const CouponsRepository = require("../../domain/repositories/couponsRepository.cjs");
 
 class RequestService {
   constructor() {
     this.requestRepository = new RequestRepository();
     this.paymentsRepository = new PaymentsRepository();
     this.userRepository = new UserRepository();
+    this.couponsRepository = new CouponsRepository();
   }
 
   async getRequests() {
@@ -40,7 +42,7 @@ class RequestService {
     }
     return request;
   }
-  async createRequest(usuarioId, carrito, aPagar) {
+  async createRequest(usuarioId, carrito, aPagar, cuponCode) {
     // Construir el array de productos para la solicitud
     const productos = carrito.map((item) => ({
       productoId: new ObjectId(item.productoId),
@@ -78,9 +80,21 @@ class RequestService {
       usuarioId,
       { carritoCompras: [] }
     );
-    console.log(resDeleteCart);
 
-    return { request, payment };
+    //cambiar el estado del cupon
+
+    // logica para cambiar el estado del cupon a false...
+    let cuponUpdate = {};
+    if (cuponCode) {
+      const updateData = {
+        estado: false,
+      };
+      cuponUpdate = await this.couponsRepository.updateByCode(
+        cuponCode,
+        updateData
+      );
+    }
+    return { request, payment, resDeleteCart, cuponUpdate };
   }
 
   async updateRequest(id, data) {

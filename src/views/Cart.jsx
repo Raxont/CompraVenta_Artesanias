@@ -77,11 +77,8 @@ export function Cart() {
   // Función para obtener el carrito del usuario
   const getCart = async (userId) => {
     try {
-      console.log(cuponCode);
       let res = undefined;
       if (cuponCode){
-        
-        
         res = await fetch(`http://localhost:3001/users/cart/`, {
           method: 'POST', 
           headers: {
@@ -94,9 +91,7 @@ export function Cart() {
         });
         
       }else {
-        console.log('aqui no debia ahaber cupon')
         res = await fetch(`http://localhost:3001/users/cart/`, {
-       
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -156,8 +151,10 @@ export function Cart() {
       "usuarioId": userId, // Usar el userId obtenido de la sesión
       "carrito": cart?.carrito || [],
       "aPagar": cart?.aPagar || {},
+      "cuponCode": cuponCode || undefined,
     };
-
+    console.log('aqui iba la comra',bodyData);
+    
     // Realiza la llamada a la API para procesar la compra
     try {
       const response = await fetch('http://localhost:3001/requests', {

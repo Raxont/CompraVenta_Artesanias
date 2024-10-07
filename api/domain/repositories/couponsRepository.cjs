@@ -49,11 +49,11 @@ class CouponsRepository {
         }
     }
 
-    async updateById(id, updateData) {
+    async updateByCode(code, updateData) {
         try {
             const coupons = new Coupons();
             // { upsert: true } // Si es verdadero, inserta un nuevo documento si no existe
-            return await coupons.findByIdAndUpdate(id, updateData, { upsert: true });
+            return await coupons.findByCodeAndUpdate(code, updateData, { upsert: true });
         } catch (error) {
             throw new Error(JSON.stringify({status: 500, message: 'Error updating Coupons'}));
         }
