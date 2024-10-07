@@ -24,7 +24,7 @@ class Pedidos {
             [
                 {
                     $match: {
-                        usuarioId: new ObjectId(userId)
+                        usuarioId: userId
                     }
                 },
                 {

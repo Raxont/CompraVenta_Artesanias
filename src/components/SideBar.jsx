@@ -7,8 +7,8 @@ import ComprasImageComponent from "../../public/ComprasIcon";
 import ListaImageComponent from "../../public/ListaIcon";
 import TalleresImageComponent from "../../public/TalleresIcon";
 import { initTheme } from '../tools/theme';
-import Logout from "./Logout";
 import ButtonTheme from './ButtonTheme';
+import Logout from "./Logout";
 
 // eslint-disable-next-line react/prop-types
 const MenuItem = ({ text, IconComponent, link }) => {
@@ -82,7 +82,7 @@ function SideBar({ user, iconUser }) {
   
   const menuItems = [
     { text: 'Lista de favoritos', IconComponent: ListaImageComponent, link: '/favoritos/Textileria' },
-    { text: 'Compras', IconComponent: ComprasImageComponent, link: '/' },
+    { text: 'Compras', IconComponent: ComprasImageComponent, link: '/compras' },
     { text: 'Talleres', IconComponent: TalleresImageComponent, link: '/talleresEducativos' },
     { text: 'Canjear cupón', IconComponent: CanjearImageComponent, link: '/cupon' }
   ];
