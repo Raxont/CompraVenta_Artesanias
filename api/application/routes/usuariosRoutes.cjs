@@ -31,7 +31,7 @@ router.get("/session-data",  (req, res) => {
   }
 });
 
-router.get('/cart/:id', (req, res) => userController.getCarritoByUserId(req, res)); //recibe el id del usuario por el parametro
+router.post('/cart/', (req, res) => userController.getCarritoByUserId(req, res)); //recibe el id del usuario por el parametro
 
 /**
  * Ruta para iniciar la autenticación con Github.
@@ -349,6 +349,7 @@ router.post("/upload-profile-picture",  async (req, res) => {
   
         // Encuentra al usuario en la base de datos
         const user = await userController.findUserById(userId);
+        console.log("🚀 ~ file.mv ~ user:", user)
         if (!user) {
           return res.status(404).json({ message: "Usuario no encontrado." });
         }

@@ -188,68 +188,78 @@ class UserService {
           })
         );
       }
-        
+
       // Eliminar el producto del carrito
       await this.userRepository.removeProductFromCart(usuarioId, productoId);
-      
     } catch (err) {
       throw err;
-    } 
+    }
   }
 
   async increaseProductToCart(usuarioId, productoId) {
     try {
-        // Verificar si el producto existe
-        const producto = await this.productRepository.getById(productoId);
-        if (!producto) {
-            throw new Error("Producto no encontrado");
-        }
+      // Verificar si el producto existe
+      const producto = await this.productRepository.getById(productoId);
+      if (!producto) {
+        throw new Error("Producto no encontrado");
+      }
 
-        // Buscar si el producto está en el carrito del usuario
-        const carrito = await this.userRepository.findProductInCart(usuarioId, productoId);
-        if (!carrito) {
-            throw new Error("Producto no está en el carrito");
-        }
+      // Buscar si el producto está en el carrito del usuario
+      const carrito = await this.userRepository.findProductInCart(
+        usuarioId,
+        productoId
+      );
+      if (!carrito) {
+        throw new Error("Producto no está en el carrito");
+      }
 
-        // Aumentar la cantidad en 1
-        await this.userRepository.incrementProductQuantity(usuarioId, productoId);
+      // Aumentar la cantidad en 1
+      await this.userRepository.incrementProductQuantity(usuarioId, productoId);
     } catch (err) {
-        // Manejo de errores
-        console.error("Error al aumentar la cantidad del producto:", err);
-        throw err; // Re-lanzar el error para manejo superior
+      // Manejo de errores
+      console.error("Error al aumentar la cantidad del producto:", err);
+      throw err; // Re-lanzar el error para manejo superior
     }
-}
+  }
 
-async decreaseProductToCart(usuarioId, productoId) {
+  async decreaseProductToCart(usuarioId, productoId) {
     try {
-        // Verificar si el producto existe
-        const producto = await this.productRepository.getById(productoId);
+      // Verificar si el producto existe
+      const producto = await this.productRepository.getById(productoId);
 
-        if (!producto) {
-            throw new Error(JSON.stringify({ status: 404, message: "Producto no encontrado" }));
-        }
+      if (!producto) {
+        throw new Error(
+          JSON.stringify({ status: 404, message: "Producto no encontrado" })
+        );
+      }
 
-        // Buscar si el producto está en el carrito del usuario
-        const carrito = await this.userRepository.findProductInCart(usuarioId, productoId);
-        if (!carrito) {
-            throw new Error("Producto no está en el carrito");
-        }
+      // Buscar si el producto está en el carrito del usuario
+      const carrito = await this.userRepository.findProductInCart(
+        usuarioId,
+        productoId
+      );
+      if (!carrito) {
+        throw new Error("Producto no está en el carrito");
+      }
 
-        // Disminuir la cantidad
-        const nuevaCantidad = carrito.cantidad - 1; // Decrementar la cantidad
+      // Disminuir la cantidad
+      const nuevaCantidad = carrito.cantidad - 1; // Decrementar la cantidad
 
-        if (nuevaCantidad > 0) {
-            // Si la cantidad es mayor que 0, actualizar la cantidad en el carrito
-            await this.userRepository.decrementProductQuantity(usuarioId, productoId);
-        } else {
-            // Si la cantidad es 0 o menos, eliminar el producto del carrito
-            await this.userRepository.removeProductFromCart(usuarioId, productoId);
-        }
+      if (nuevaCantidad > 0) {
+        // Si la cantidad es mayor que 0, actualizar la cantidad en el carrito
+        await this.userRepository.decrementProductQuantity(
+          usuarioId,
+          productoId
+        );
+      } else {
+        // Si la cantidad es 0 o menos, eliminar el producto del carrito
+        await this.userRepository.removeProductFromCart(usuarioId, productoId);
+      }
     } catch (err) {
-        // await session.abortTransaction();
-        throw err; // Re-lanzar el error para manejarlo en otro lugar
+      // await session.abortTransaction();
+      throw err; // Re-lanzar el error para manejarlo en otro lugar
     }
-}
+  }
 
   async getCarritoData(userid) {
     const carrito = await this.userRepository.getCarritoData(userid);
@@ -269,66 +279,69 @@ async decreaseProductToCart(usuarioId, productoId) {
 
     // Calcular el subtotal y aplicar promociones por producto
     carrito.forEach((producto) => {
-        const cantidad = parseInt(producto.cantidad);
-        const precio = producto.precio;
+      const cantidad = parseInt(producto.cantidad);
+      const precio = producto.precio;
 
-        // Calcular subtotal del producto sin promociones
-        subtotal += cantidad * precio;
+      // Calcular subtotal del producto sin promociones
+      subtotal += cantidad * precio;
 
-        // Calcular cantidad a pagar según la promoción
-        let cantidadConPromocion = cantidad;
-        if (producto.promocion) {
-            const [lleva, paga] = producto.promocion.split("x").map(Number);
-            if (cantidad >= lleva) {
-                const promocionesAplicadas = Math.floor(cantidad / lleva);
-                const productosSinPromocion = cantidad % lleva;
-                cantidadConPromocion =
-                    promocionesAplicadas * paga + productosSinPromocion;
-            }
+      // Calcular cantidad a pagar según la promoción
+      let cantidadConPromocion = cantidad;
+      if (producto.promocion) {
+        const [lleva, paga] = producto.promocion.split("x").map(Number);
+        if (cantidad >= lleva) {
+          const promocionesAplicadas = Math.floor(cantidad / lleva);
+          const productosSinPromocion = cantidad % lleva;
+          cantidadConPromocion =
+            promocionesAplicadas * paga + productosSinPromocion;
         }
+      }
 
-        // Calcular el total del producto aplicando promociones
-        total += cantidadConPromocion * precio;
+      // Calcular el total del producto aplicando promociones
+      total += cantidadConPromocion * precio;
 
-        // Sumar el costo de envío
-        totalEnvio += producto.envio;
+      // Sumar el costo de envío
+      totalEnvio += producto.envio;
     });
 
     // Aplicar el cupón de descuento, si existe
     if (cuponCode) {
-        // Obtener el cupón de la base de datos usando el código
-        const cupon = await this.couponsRepository.getByCode(cuponCode);
+      // Obtener el cupón de la base de datos usando el código
+      const cupon = await this.couponsRepository.getByCode(cuponCode);
 
-        if (!cupon) {
-            console.log("Cupón no encontrado");
+      if (!cupon) {
+        console.log("Cupón no encontrado");
+      } else {
+        // Verificar si el cupón es válido para el usuario o si tiene stock
+        if (cupon.tipo === "asignado") {
+          if (
+            cupon.usuarioId.toString() === userId.toString() &&
+            cupon.estado === true
+          ) {
+            // Aplicar descuento basado en el porcentaje de descuento del cupón
+            descuentoCupon = total * cupon.descuento;
+            total -= descuentoCupon;
+          } else {
+            console.log("Cupón no válido para este usuario o ya utilizado");
+          }
         } else {
-            // Verificar si el cupón es válido para el usuario o si tiene stock
-            if (cupon.tipo === "asignado") {
-                if (cupon.usuarioId.toString() === userId.toString() && cupon.estado === true) {
-                    // Aplicar descuento basado en el porcentaje de descuento del cupón
-                    descuentoCupon = total * (cupon.descuento / 100);
-                    total -= descuentoCupon;
-                } else {
-                    console.log("Cupón no válido para este usuario o ya utilizado");
-                }
-            } else {
-                // Si el cupón no está asignado a un usuario específico, revisar el stock
-                if (cupon.stock > 0) {
-                    descuentoCupon = total * (cupon.descuento / 100);
-                    total -= descuentoCupon;
-                } else {
-                    console.log("Cupón no válido o sin stock");
-                }
-            }
+          // Si el cupón no está asignado a un usuario específico, revisar el stock
+          if (cupon.stock > 0) {
+            descuentoCupon = total * (cupon.descuento / 100);
+            total -= descuentoCupon;
+          } else {
+            console.log("Cupón no válido o sin stock");
+          }
         }
+      }
     }
 
     // Retornar el resultado con los valores calculados
     return {
-        subtotal,
-        totalEnvio,
-        descuentoCupon,
-        total: total + totalEnvio // Sumar costos de envío al total final
+      subtotal,
+      totalEnvio,
+      descuentoCupon,
+      total: total + totalEnvio, // Sumar costos de envío al total final
     };
   }
 

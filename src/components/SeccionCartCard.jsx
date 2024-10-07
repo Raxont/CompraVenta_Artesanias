@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import CartCard from './CartCard';
 
-const SecccionCartCard = ({ cart }) => {
+const SecccionCartCard = ({ cart, onUpdateCart }) => {
   const [datos, setDatos] = useState([]);
   const [userId, setUserId] = useState(null); // Para almacenar el userId
   
@@ -66,7 +66,8 @@ const SecccionCartCard = ({ cart }) => {
         throw new Error('Error al aumentar la cantidad del producto');
       }
 
-      setDatos(newDatos); // Actualiza el estado solo si la petición es exitosa
+      // setDatos(newDatos); // Actualiza el estado solo si la petición es exitosa
+      onUpdateCart()
     } catch (error) {
       console.error('Error:', error);
       // Puedes mostrar un mensaje de error al usuario aquí
@@ -103,7 +104,8 @@ const SecccionCartCard = ({ cart }) => {
                 throw new Error('Error al disminuir la cantidad del producto');
             }
 
-            setDatos(newDatos); // Actualiza el estado solo si la petición es exitosa
+            // setDatos(newDatos); // Actualiza el estado solo si la petición es exitosa
+            onUpdateCart()
         }
     } catch (error) {
         console.error('Error:', error);
@@ -141,7 +143,8 @@ const SecccionCartCard = ({ cart }) => {
       console.log('Producto eliminado:', data); // Maneja la respuesta de la API
 
       // Actualiza la lista de productos después de la eliminación
-      setDatos((prevDatos) => prevDatos.filter((_, i) => i !== index));
+      // setDatos((prevDatos) => prevDatos.filter((_, i) => i !== index));
+      onUpdateCart()
 
     } catch (error) {
       console.error('Error:', error);

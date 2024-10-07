@@ -421,7 +421,7 @@ async decreaseProduct(req, res) {
 
   async getCarritoByUserId(req, res){
       try {
-          const userId = req.params.id; 
+          const userId = req.body.id; 
           const cuponCode = req.body?.codigo || undefined;
       
           const carrito = await this.userService.getCarritoData(userId);

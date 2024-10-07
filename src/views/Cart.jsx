@@ -77,27 +77,34 @@ export function Cart() {
   // Función para obtener el carrito del usuario
   const getCart = async (userId) => {
     try {
+      console.log(cuponCode);
       let res = undefined;
       if (cuponCode){
         
         
-        res = await fetch(`http://localhost:3001/users/cart/${userId}`, {
-          method: 'POST', // Cambia el método a POST o PUT según lo que necesites
+        res = await fetch(`http://localhost:3001/users/cart/`, {
+          method: 'POST', 
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             codigo: cuponCode,
+            id:userId
           }),
         });
         
       }else {
-        res = await fetch(`http://localhost:3001/users/cart/${userId}}`, {
+        console.log('aqui no debia ahaber cupon')
+        res = await fetch(`http://localhost:3001/users/cart/`, {
        
-        method: 'GET',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({
+          id: userId
+        })
+
       });
     }
       const data = await res.json();
