@@ -153,7 +153,6 @@ export function Cart() {
       "aPagar": cart?.aPagar || {},
       "cuponCode": cuponCode || undefined,
     };
-    console.log('aqui iba la comra',bodyData);
     
     // Realiza la llamada a la API para procesar la compra
     try {
@@ -169,8 +168,6 @@ export function Cart() {
       }
 
       const data = await response.json();
-      console.log('Compra realizada:', data); // Maneja la respuesta de la API
-
       // Redirigir a la página de confirmación
       navigate('/confirm');
     } catch (error) {

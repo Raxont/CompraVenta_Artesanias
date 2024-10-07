@@ -54,20 +54,6 @@ class MessagesController {
         }
     }
 
-    // async requestExiste(request){
-    //     try {
-    //         const requestExiste = await this.requestService.getMessagesNickOrEmailOrCedula(request?.nick, request?.email, request?.cedula);
-    //         console.log(requestExiste);
-            
-    //         if (requestExiste)return {status:409, message:'datos de mensaje duplicados', field: requestExiste?.firstMatch }
-            
-    //         return false
-    //     } catch (error) {
-    //         const errorObj = JSON.parse(error.message);
-    //         res.status(errorObj.status).json({ message: errorObj.message });
-    //     }
-    // }
-
     async updateMessages(req, res) {
         try {
             const errors = validationResult(req);
