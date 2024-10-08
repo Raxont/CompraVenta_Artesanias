@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate  } from 'react-router-dom';
 import io from 'socket.io-client';
 import { initTheme } from '../../tools/theme';
 import PurchaseHistoryButtonChat from "../../components/PurchaseHistoryButton-chat";
@@ -13,8 +13,36 @@ export function Chat() {
   const [newMessage, setNewMessage] = useState('');
   const [userId] = useState(`user_${Math.floor(Math.random() * 10000)}`); // Generar un nuevo userId cada vez
   const [taller, setTaller] = useState('');
+  const [user_id, setUser_id] = useState(null); // Cambiado a usar useState
+  const navigate = useNavigate(); // Inicializar useNavigate
 
   useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const response = await fetch('/api/users/session-data', {
+          method: 'GET',
+          credentials: 'include',
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          
+          // Asegúrate de que el userId esté presente
+          if (data.userId) {
+            setUser_id(data.userId);
+          } else {
+            console.error('No estás autenticado'); // Si no hay userId, manejar el error
+            navigate('/login'); // Redirigir al login
+          }
+        } else {
+          console.error('No estás autenticado'); // Si la respuesta no es OK
+          navigate('/login'); // Redirigir al login
+        }
+      } catch (error) {
+        console.error('Error al obtener el id del usuario:', error);
+        navigate('/login'); // Redirigir al login en caso de error
+      }
+    };
     const fetchTaller = async () => {
       try {
         const response = await fetch(`/api/workshops/${receptorId}`);
@@ -25,11 +53,12 @@ export function Chat() {
         console.error('Error al obtener el nombre del taller:', error);
       }
     };
+    fetchUserId();
 
     if (receptorId) {
       fetchTaller();
     }
-  }, [receptorId]);
+  }, [receptorId,navigate]);
 
   useEffect(() => {
     // Emitir joinRoom cuando userId y taller estén disponibles

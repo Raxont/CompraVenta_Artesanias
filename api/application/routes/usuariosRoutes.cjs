@@ -20,7 +20,7 @@ const userValidator = new UserValidator();
  * @param {Object} req - La solicitud HTTP.
  * @param {Object} res - La respuesta HTTP.
  */
-router.get("/session-data",  (req, res) => {  
+router.get("/session-data", authenticateToken, (req, res) => {  
   if (req.session?.passport?.user) {
     const userId = req.session.passport.user; // Obtén el ID del usuario
     const token = req.session.token || null;  // Obtén el token del usuario (si existe)
@@ -31,7 +31,7 @@ router.get("/session-data",  (req, res) => {
   }
 });
 
-router.post('/cart/', (req, res) => userController.getCarritoByUserId(req, res)); //recibe el id del usuario por el parametro
+router.post('/cart/', authenticateToken, (req, res) => userController.getCarritoByUserId(req, res)); //recibe el id del usuario por el parametro
 
 /**
  * Ruta para iniciar la autenticación con Github.
@@ -323,13 +323,13 @@ router.get(
 );
 
 //rutas de crud usuarios
-router.get("/search",  (req, res) => userController.searchUsers(req, res));
+router.get("/search", authenticateToken, (req, res) => userController.searchUsers(req, res));
 
-router.get("/:id", (req, res) => userController.getUser(req, res));
+router.get("/:id", authenticateToken, (req, res) => userController.getUser(req, res));
 
-router.get("/", (req, res) => userController.getUsers(req, res));
+router.get("/", authenticateToken, (req, res) => userController.getUsers(req, res));
 
-router.post("/upload-profile-picture",  async (req, res) => {
+router.post("/upload-profile-picture", authenticateToken, async (req, res) => {
     const userId = req.session.passport.user;
     if (!req.files || Object.keys(req.files).length === 0) {
       return res.status(400).json({ message: "No se ha subido ningún archivo." });
@@ -422,22 +422,22 @@ router.post("/logout",  async (req, res) => {
  */
 router.post("/", (req, res) => userController.createUser(req, res));
 
-router.put('/addFavourite/:userId/:productId',   userValidator.validateUpdateFavouriteProducts(), (req, res) => userController.pushFavouriteProductsToUser(req, res));
+router.put('/addFavourite/:userId/:productId', authenticateToken,  userValidator.validateUpdateFavouriteProducts(), (req, res) => userController.pushFavouriteProductsToUser(req, res));
 
-router.put('/removeFavourite/:userId/:productId',   userValidator.validateUpdateFavouriteProducts(), (req, res) => userController.pullFavouriteProductsToUser(req, res));
+router.put('/removeFavourite/:userId/:productId', authenticateToken,  userValidator.validateUpdateFavouriteProducts(), (req, res) => userController.pullFavouriteProductsToUser(req, res));
 
-router.put('/addToCart/:userId',  (req, res) => userController.addToCart(req, res));
-router.put('/cart/increase',  (req, res) => userController.increaseProduct(req, res)); 
-router.put('/cart/decrease',  (req, res) => userController.decreaseProduct(req, res)); 
+router.put('/addToCart/:userId', authenticateToken, (req, res) => userController.addToCart(req, res));
+router.put('/cart/increase', authenticateToken, (req, res) => userController.increaseProduct(req, res)); 
+router.put('/cart/decrease', authenticateToken, (req, res) => userController.decreaseProduct(req, res)); 
 /**
  * Ruta para actualizar la informacion de un usuario.
  * @param {Object} req - La solicitud HTTP, contiene los datos del usuario en el cuerpo de la solicitud.
  * @param {Object} res - La respuesta HTTP.
  * @returns {Promise<void>}
  */
-router.put("/:id",  (req, res) => userController.updateUserForms(req, res));
+router.put("/:id", authenticateToken, (req, res) => userController.updateUserForms(req, res));
 
-router.delete('/cart',  (req, res) => userController.removeToCart(req, res)); 
+router.delete('/cart', authenticateToken, (req, res) => userController.removeToCart(req, res)); 
 
 /**
  * Ruta para eliminar un usuario creado.
@@ -445,7 +445,7 @@ router.delete('/cart',  (req, res) => userController.removeToCart(req, res));
  * @param {Object} res - La respuesta HTTP.
  * @returns {Promise<void>}
  */
-router.delete("/:id", (req, res) =>
+router.delete("/:id", authenticateToken, (req, res) =>
   userController.deleteUser(req, res)
 );
 

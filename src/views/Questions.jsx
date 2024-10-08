@@ -3,8 +3,65 @@ import Tittle from '../components/Tittle'
 import CardQuestions from '../components/CardQuestions';
 import { StoreChatIcon } from "../components/storeChatIcon";
 import { CallIcon } from "../assets/call"
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function PreguntasFrecuentes() {
+  const [loading, setLoading] = useState(true); // Estado para manejar la carga
+  const [error, setError] = useState(false); // Estado para manejar errores
+  const navigate = useNavigate(); // Hook para redirigir al login
+
+  // Función para obtener el userId desde /session-data
+  const fetchUserId = async () => {
+    try {
+      const response = await fetch('/api/users/session-data', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      if (!response.ok) {
+        throw new Error('Error al obtener los datos de sesión');
+      }
+      const data = await response.json();
+      console.log("🚀 ~ fetchUserId ~ data:", data)
+      return data?.userId;
+    } catch (error) {
+      console.error('Error al obtener el ID del usuario:', error);
+      return null;
+    }
+  };
+
+  // useEffect para verificar la sesión del usuario
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const userId = await fetchUserId();
+        console.log("🚀 ~ checkSession ~ userId:", userId)
+        if (!userId) {
+          setError(true); // Marca error si no hay sesión
+          navigate('/login'); // Redirige al login si no hay sesión
+        }
+      } catch (error) {
+        setError(true); // Si ocurre algún error, marca error
+        navigate('/login'); // Redirige al login
+      } finally {
+        setLoading(false); // Finaliza la carga
+      }
+    };
+
+    checkSession();
+  }, [navigate]);
+
+  // Mostrar un mensaje de carga o redirigir si hay error o falta de sesión
+  if (loading) {
+    return <p>Cargando...</p>;
+  }
+
+  if (error) {
+    return <p>Redirigiendo al login...</p>;
+  }
   return (
     <div>
         <section className='h-[9em]'>

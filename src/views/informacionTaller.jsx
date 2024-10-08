@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate  } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {TrianguloIzquierdo} from "../assets/trianguloIzquierdo.jsx";
 import {LibretaIcon} from "../assets/libretaIcon.jsx";
@@ -14,6 +14,7 @@ export function InformacionTaller() {
     const data = useLoaderData();
     const [userId, setUserId] = useState(null); // Almacenar el userId
     const [isInscrito, setIsInscrito] = useState(false); // Estado para manejar si el usuario ya está inscrito
+    const navigate = useNavigate()
 
     // Obtener el userId desde /session-data
     const fetchUserId = async () => {
@@ -21,18 +22,19 @@ export function InformacionTaller() {
             const response = await fetch('/api/users/session-data', {
                 method: 'GET',
                 credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
             });
-            if (!response.ok) {
-                throw new Error('Error al obtener los datos de sesión');
-            }
             const data = await response.json();
+
+            if (!response.ok || !data.userId) {
+                // Si la respuesta no es OK o no hay ID de usuario, devolver un error
+                throw new Error("No se ha iniciado sesión");
+            }
+            
             setUserId(data.userId); // Almacenar el userId en el estado
             await checkInscripcion(data.userId); // Verificar la inscripción
         } catch (error) {
             console.error('Error al obtener el ID del usuario:', error);
+            navigate('/login'); // Redirigir al login si no hay una sesión iniciada
         }
     };
 
@@ -153,7 +155,6 @@ export function InformacionTaller() {
         10: "Noviembre",
         11: "Diciembre",
     };
-
 
     return (
         <>

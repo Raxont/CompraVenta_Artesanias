@@ -16,6 +16,8 @@ const usuariosRoutes = require("../../application/routes/usuariosRoutes.cjs"); /
 const workshopsRoutes = require("../../application/routes/workshopsRoutes.cjs"); // Rutas de talleres
 const requestsRoutes = require('../../application/routes/requestsRoutes.cjs');
 
+const {authenticateToken} = require("../../infrastructure/middlewares/authMiddleware.cjs");
+
 const { jsonParseErrorHandler } = require("../middlewares/errorHandling.cjs"); // Middleware para manejar errores de JSON
 const { limiTotal } = require("../middlewares/rateLimit.cjs"); // Middleware para limitar solicitudes
 
@@ -41,18 +43,18 @@ const createServer = () => {
 
   // Rutas
   app.use("/users", usuariosRoutes); // Configura las rutas para la gestión de usuarios
-  app.use("/workshops", workshopsRoutes); // Configura las rutas para la gestión de talleres
+  app.use("/workshops", authenticateToken, workshopsRoutes); // Configura las rutas para la gestión de talleres
   
   //* Crear un servidor HTTP usando la aplicación Express
   const server = http.createServer(app); // Crea un servidor HTTP con la aplicación Express
 
   //* Inicializar sockets para comunicación en tiempo real
   initializeSocket(server); // Inicializa la comunicación en tiempo real con sockets
-  app.use('/products',  productsRoutes);
-  app.use('/educationalWorkshops', educationalWorkshopRoutes);
-  app.use('/payments', paymentsRoutes);
-  app.use('/requests', requestsRoutes);
-  app.use('/coupons', couponsRoutes);
+  app.use('/products', authenticateToken, productsRoutes);
+  app.use('/educationalWorkshops', authenticateToken, educationalWorkshopRoutes);
+  app.use('/payments', authenticateToken, paymentsRoutes);
+  app.use('/requests', authenticateToken, requestsRoutes);
+  app.use('/coupons', authenticateToken, couponsRoutes);
 
   return server; // Retorna el servidor configurado
 };

@@ -1,5 +1,5 @@
-import { Link, useLoaderData, useLocation } from "react-router-dom";
-import { useState } from 'react';
+import { Link, useLoaderData, useLocation,useNavigate } from "react-router-dom";
+import { useState,useEffect } from 'react';
 import { ProductoCard } from "../components/productoCard";
 import { ViewTitleAndDescription } from "../components/viewTitle&Description";
 import SearchBar from "../components/SearchBar";
@@ -8,11 +8,15 @@ import {TrianguloIzquierdo} from "../assets/trianguloIzquierdo.jsx";
 
 export const descuentosLoader = async ({ params }) => {
   try {
-    const resUser = await fetch(`/api/users/session-data`, {
-      method: 'GET',
-      credentials: 'include'
-  });
-  const dataUser = await resUser.json();
+      const resUser = await fetch(`/api/users/session-data`, {
+        method: 'GET',
+        credentials: 'include'
+    });
+    const dataUser = await resUser.json();
+    if (!resUser.ok || !dataUser.userId) {
+      // Si la respuesta no es OK o no hay ID de usuario, devolver un error
+      throw new Error("No session data");
+    }
     const res = await fetch(`/api/products/discounts/${params.categoria}`);
     if (!res.ok) {
       throw new Error("No se encontraron productos");
@@ -27,9 +31,22 @@ export const descuentosLoader = async ({ params }) => {
 export function Descuentos() {
   const { productos, usuario, error, message } = useLoaderData();
   const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
   const location = useLocation();
   const currentPath = location.pathname;
+  // Usamos useEffect para verificar el estado de la sesión y redirigir si es necesario
+  useEffect(() => {
+      if (error || !usuario?.userId) {
+      // Si hay un error o no hay datos de usuario, redirigir al login
+      navigate("/login");
+      }
+  }, [usuario, error, navigate]);
+
+  // Si aún no tenemos los datos del usuario, puedes mostrar un loader o algún mensaje
+  if (error || !usuario?.userId) {
+      return <p>Loading...</p>; // O puedes mostrar un mensaje de redirección
+  }
 
   // Modificación del path sin agregar ID del usuario
   const newPath = currentPath.split("/").slice(0, -1).join("/");

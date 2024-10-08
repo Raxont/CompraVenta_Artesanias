@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link, useLoaderData } from "react-router-dom";
+import { useState,useEffect } from 'react';
+import { Link, useLoaderData,useNavigate } from "react-router-dom";
 import { TrianguloDerecho } from "../assets/trianguloDerecho.jsx";
 import { TrianguloIzquierdo } from "../assets/trianguloIzquierdo.jsx";
 import PurchaseHistoryButton from "../components/PurchaseHistoryButton-chat";
@@ -15,6 +15,10 @@ export const tiendaLoader = async ({params}) => {
             credentials: 'include'
         });
         const dataUser = await resUser.json();
+        if (!resUser.ok || !dataUser.userId) {
+            // Si la respuesta no es OK o no hay ID de usuario, devolver un error
+            throw new Error("No session data");
+        }
         let resProducts = await fetch(`/api/workshops/products/${params.id}`);
         let dataProducts = await resProducts.json();
         return {productos: dataProducts, usuario: dataUser}
@@ -23,8 +27,22 @@ export const tiendaLoader = async ({params}) => {
     }
 }
 export function Tienda () {
-    const {productos, usuario, error, message} = useLoaderData();
+    const {productos, usuario, error} = useLoaderData();
     const [searchQuery, setSearchQuery] = useState('');
+    const navigate = useNavigate();
+
+     // Usamos useEffect para verificar el estado de la sesión y redirigir si es necesario
+    useEffect(() => {
+        if (error || !usuario?.userId) {
+        // Si hay un error o no hay datos de usuario, redirigir al login
+        navigate("/login");
+        }
+    }, [usuario, error, navigate]);
+
+    // Si aún no tenemos los datos del usuario, puedes mostrar un loader o algún mensaje
+    if (error || !usuario?.userId) {
+        return <p>Loading...</p>; // O puedes mostrar un mensaje de redirección
+    }
 
     return (
         <>
@@ -47,7 +65,7 @@ export function Tienda () {
             <div className="w-[100vw] h-[10.2vh] mb-5 relative">
                 <Tittle tittle="Artesanías"/>
                 {productos.map((producto, index) => {
-                    return<Link to={`/chat/${producto.producto_taller}`} >
+                    return<Link key={index} to={`/chat/${producto.producto_taller}`} >
                     <StoreChatIcon style="h-[55%] absolute right-2 bottom-2.5 text-secondary dark:text-dark-bg"/>
                     </Link>
                 })} 

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Footer from '../../components/Footer';
 import SearchBar from "../../components/SearchBar";
 import { initTheme } from '../../tools/theme';
+import { useNavigate } from 'react-router-dom';
 
 export function User() {
   initTheme();
@@ -18,6 +19,7 @@ export function User() {
   const [originalUserData, setOriginalUserData] = useState(null); // Para mantener los datos originales
   const [isEditing, setIsEditing] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserId = async () => {
@@ -25,20 +27,26 @@ export function User() {
         const response = await fetch('/api/users/session-data', {
           method: 'GET',
           credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          }
         });
+
         if (response.ok) {
           const data = await response.json();
           
-          setUserId(data.userId);
-          fetchUserData(data.userId);
+          // Asegúrate de que el userId esté presente
+          if (data.userId) {
+            setUserId(data.userId);
+            fetchUserData(data.userId);
+          } else {
+            console.error('No estás autenticado'); // Si no hay userId, manejar el error
+            navigate('/login'); // Redirigir al login
+          }
         } else {
-          console.error('No estás autenticado');
+          console.error('No estás autenticado'); // Si la respuesta no es OK
+          navigate('/login'); // Redirigir al login
         }
       } catch (error) {
         console.error('Error al obtener el id del usuario:', error);
+        navigate('/login'); // Redirigir al login en caso de error
       }
     };
   

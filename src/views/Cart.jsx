@@ -1,5 +1,5 @@
 import  { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams, useLoaderData } from 'react-router-dom';
+import { useLocation, redirect , useLoaderData } from 'react-router-dom';
 import SearchBar from "../components/SearchBar";
 import Footer from '../components/Footer';
 import SecccionCartCard from '../components/SeccionCartCard';
@@ -10,22 +10,35 @@ export const cartLoader = async () => {
   try {
     const resUser = await fetch(`/api/users/session-data`, {
       method: 'GET',
-      credentials: 'include'
+      credentials: 'include',
     });
+
+    if (!resUser.ok) {
+      // Redirige al login si no hay sesión
+      return redirect("/login");
+    }
+
     const dataUser = await resUser.json();
+
+    // Asegúrate de que el userId esté presente
+    if (!dataUser.userId) {
+      // Redirige al login si no hay userId
+      return redirect("/login");
+    }
+
     // Devuelve los datos del usuario al componente
     return { usuario: dataUser };
   } catch (err) {
-    return { error: true, message: err.message };
+    console.error('Error en cartLoader:', err);
+    // Redirige al login en caso de un error
+    return redirect("/login");
   }
 };
 
 export function Cart() {
-  const { usuario, error, message} = useLoaderData()
-  const { couponCode } = useParams();
+  const { usuario} = useLoaderData()
   const [searchQuery, setSearchQuery] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const navigate = useNavigate();
   const [cart, setCart] = useState(null); // Inicializar como null
   const [userId, setUserId] = useState(null); // Almacena el userId
   const [coupon, setCoupon] = useState(null); // Almacena el cupón del usuario

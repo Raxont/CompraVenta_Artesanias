@@ -1,34 +1,73 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import PurchaseHistoryButton from "../components/PurchaseHistoryButton";
 import { HeaderBorder } from "../components/headerBorder";
-import  QRCode  from 'react-qr-code';
+import QRCode from 'react-qr-code';
 import { initTheme } from '../tools/theme';
 import { useEffect, useState } from 'react';
 
-export const HistoriaTallerLoader = async ({params}) => {
-    let res = await fetch(`/api/workshops/${params.id}`);
-    let data = await res.json();
-    return data
-}
+// Loader para obtener datos del taller y verificar sesión
+export const HistoriaTallerLoader = async ({ params }) => {
+  try {
+    // Obtener el ID del usuario desde /session-data
+    const fetchUserId = async () => {
+      const response = await fetch('/api/users/session-data', {
+        method: 'GET',
+        credentials: 'include',
+      });
+      const data = await response.json();
+      if (!response.ok || !data.userId) {
+        throw new Error("No session data");
+      }
+      return data.userId;
+    };
 
-export function HistoriaTaller () {
-    initTheme();
+    // Verificar si el usuario está autenticado
+    const userId = await fetchUserId();
+    if (!userId) {
+      throw new Error('Usuario no autenticado');
+    }
 
-    const data = useLoaderData()
-    const youtubeUrl = `https://www.youtube.com/embed/${data.documental}`;
+    // Obtener datos del taller por ID
+    const res = await fetch(`/api/workshops/${params.id}`);
+    if (!res.ok) {
+      throw new Error('Error al obtener los datos del taller');
+    }
+    const data = await res.json();
 
-    // Estado para manejar el color del QR
-    const [qrColor, setQrColor] = useState('#703a31'); // Rojo por defecto para tema claro
+    return { data, userId };
+  } catch (err) {
+    return { error: true, message: err.message };
+  }
+};
 
-    // Cambiar el color del QR según el tema
-    useEffect(() => {
-        const currentTheme = localStorage.getItem('theme') || 'light';
-        if (currentTheme === 'dark') {
-            setQrColor('#000000'); // Negro para tema oscuro
-        } else {
-            setQrColor('#703a31'); // Rojo para tema claro
-        }
-    }, []);
+// Componente HistoriaTaller
+export function HistoriaTaller() {
+  initTheme();
+  const { data, error } = useLoaderData();
+  const [qrColor, setQrColor] = useState('#703a31'); // Estado para manejar el color del QR
+  const navigate = useNavigate();
+
+  // Verificar si hay error o no hay datos de sesión y redirigir al login si es necesario
+  useEffect(() => {
+    if (error || !data) {
+      navigate("/login"); // Redirigir al login si no hay sesión o hay error
+    }
+  }, [error, data, navigate]);
+
+  // Cambiar el color del QR según el tema
+  useEffect(() => {
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    setQrColor(currentTheme === 'dark' ? '#000000' : '#703a31');
+  }, []);
+
+  // Mostrar un mensaje de carga si los datos aún no están disponibles
+  if (!data || error) {
+    return <p>Loading...</p>; // También podrías personalizar este loader
+  }
+  const youtubeUrl = `https://www.youtube.com/embed/${data.documental}`;
+
+  
+  
 
     return (
         <>

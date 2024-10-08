@@ -4,10 +4,15 @@ import Tittle from '../components/Tittle';
 import { ViewTitleAndDescription } from '../components/viewTitle&Description';
 import CuponTicket from '../components/CuponTicket';
 import CouponList from '../components/SeccionCuponList';
+import { useNavigate } from "react-router-dom"
+
 
 function Cupon() {
   const [cupones, setCupones] = useState([]); // Estado para almacenar los cupones
   const [loading, setLoading] = useState(true); // Estado para manejar la carga
+  const [error, setError] = useState(false); // Estado para manejar errores
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     // Obtener el userId desde /session-data
@@ -16,17 +21,21 @@ function Cupon() {
         const response = await fetch('/api/users/session-data', {
           method: 'GET',
           credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          }
         });
-        if (!response.ok) {
-          throw new Error('Error al obtener los datos de sesión');
-        }
         const data = await response.json();
+
+        if (!response.ok || !data.userId) {
+          // Si no hay sesión o error en la respuesta, lanzar un error
+          throw new Error("No session data");
+        }
+        // Si el usuario tiene sesión, buscar los cupones asignados
         await fetchUserCoupon(data.userId);
       } catch (error) {
-        console.error('Error al obtener el ID del usuario:', error);
+        console.error('Error al obtener el ID del usuario o los cupones:', error);
+        setError(true); // Marca el estado de error
+        navigate("/login"); // Redirigir al login si no hay sesión
+      } finally {
+        setLoading(false); // Finalizar la carga
       }
     };
 
@@ -53,8 +62,16 @@ function Cupon() {
     };
 
     fetchUserId();
-  }, []);
+  }, [navigate]);
 
+  // Mostrar un mensaje de carga o redirigir si hay error o falta de sesión
+  if (loading) {
+    return <p>Cargando...</p>;
+  }
+
+  if (error) {
+    return <p>Redirigiendo al login...</p>;
+  }
 
   return (
     <div className="flex flex-col">

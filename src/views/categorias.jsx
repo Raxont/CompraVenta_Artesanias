@@ -1,10 +1,10 @@
-import { useLoaderData } from "react-router-dom"
+import { useLoaderData,useNavigate } from "react-router-dom"
 import { CategoriesCarousel } from "../components/categoriesCarousel"
 import { ProductoCard } from "../components/productoCard"
 import { SearchProducts } from "../components/searchProducts"
 import PurchaseHistoryButton from '../components/PurchaseHistoryButton'
 import Tittle from '../components/Tittle'
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 
 export const categoriasLoader = async ({params}) => {
     try {
@@ -13,6 +13,12 @@ export const categoriasLoader = async ({params}) => {
             credentials: 'include'
         });
         const dataUser = await resUser.json();
+        
+        if (!resUser.ok || !dataUser.userId) {
+            // Si la respuesta no es OK o no hay ID de usuario, devolver un error
+            throw new Error("No session data");
+        }
+
         let res = await fetch(`/api/products/category/${encodeURIComponent(params.categoria)}`);
         if (!res.ok) {
             throw new Error('No se encontraron productos');
@@ -25,8 +31,22 @@ export const categoriasLoader = async ({params}) => {
 }
 
 export function Categorias () {
-    const {productos, usuario, error, message} = useLoaderData()
+    const {productos, usuario, error} = useLoaderData()
     const [searchQuery, setSearchQuery] = useState('');
+    const navigate = useNavigate();
+
+    // Usamos useEffect para verificar el estado de la sesión y redirigir si es necesario
+    useEffect(() => {
+        if (error || !usuario?.userId) {
+        // Si hay un error o no hay datos de usuario, redirigir al login
+        navigate("/login");
+        }
+    }, [usuario, error, navigate]);
+
+    // Si aún no tenemos los datos del usuario, puedes mostrar un loader o algún mensaje
+    if (error || !usuario?.userId) {
+        return <p>Loading...</p>; // O puedes mostrar un mensaje de redirección
+    }
     return (
         <>
             <section className='h-[10.2vh] w-[100vw] mb-5'>

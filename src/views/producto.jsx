@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData,useNavigate } from "react-router-dom";
 import { TrianguloIzquierdo } from "../assets/trianguloIzquierdo";
 import { CheckIcon } from "../assets/checkIcon"
 import { CartIcon } from "../assets/cart.jsx";
@@ -9,85 +9,88 @@ import PurchaseHistoryButton from "../components/PurchaseHistoryButton";
 
 // Loader para obtener datos del producto y usuario
 export const productoLoader = async ({ params }) => {
-    try {
-      // Obtener el ID del usuario desde /session-data
-      const fetchUserId = async () => {
-        try {
-          const response = await fetch('/api/users/session-data', {
-            method: 'GET',
-            credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json',
-            }
-          });
-          if (response.ok) {
-            const data = await response.json();
-            return data.userId; // Retorna el userId desde la sesión
-          } else {
-            console.error('No estás autenticado');
-            return null;
-          }
-        } catch (error) {
-          console.error('Error al obtener el ID del usuario:', error);
-          return null;
+  try {
+    // Obtener el ID del usuario desde /session-data
+    const fetchUserId = async () => {
+      try {
+        const response = await fetch('/api/users/session-data', {
+          method: 'GET',
+          credentials: 'include',
+        });
+        const data = await response.json();
+        if (!response.ok || !data.userId) {
+          // Si la respuesta no es OK o no hay ID de usuario, devolver un error
+          throw new Error("No session data");
         }
-      };
-  
-      // Obtener los datos completos del usuario
-      const fetchUserData = async (userId) => {
-        try {
-          const response = await fetch(`/api/users/${userId}`, {
-            method: 'GET',
-            credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json',
-            }
-          });
-  
-          if (response.ok) {
-            const data = await response.json();
-            return data; // Retorna los datos completos del usuario
-          } else {
-            console.error('Error al obtener la información del usuario');
-            return null;
-          }
-        } catch (error) {
-          console.error('Error al obtener la información del usuario:', error);
-          return null;
-        }
-      };
-  
-      // Llamada a la API para obtener el ID del usuario
-      const userId = await fetchUserId();
-  
-      if (!userId) {
-        throw new Error('Usuario no autenticado');
+        return data.userId; // Retorna el userId desde la sesión
+      } catch (error) {
+        console.error('Error al obtener el ID del usuario:', error);
+        return null;
       }
-  
-      // Obtener los datos completos del usuario
-      const userData = await fetchUserData(userId);
-  
-      // Llamada para obtener los detalles del producto
-      const resProduct = await fetch(`/api/products/${params.productId}`);
-      const dataProduct = await resProduct.json();
-  
-      // Devuelve los datos del producto y del usuario al componente
-      return { producto: dataProduct, usuario: userData };
-    } catch (err) {
-      return { error: true, message: err.message };
+    };
+
+    // Llamada a la API para obtener el ID del usuario
+    const userId = await fetchUserId();
+
+    if (!userId) {
+      return { error: true, message: 'Usuario no autenticado' };
     }
-  };
+
+    // Obtener los datos completos del usuario
+    const responseUser = await fetch(`/api/users/${userId}`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!responseUser.ok) {
+      throw new Error('Error al obtener los datos del usuario');
+    }
+    const userData = await responseUser.json();
+
+    // Llamada para obtener los detalles del producto
+    const resProduct = await fetch(`/api/products/${params.productId}`);
+    const dataProduct = await resProduct.json();
+    if (!resProduct.ok) {
+      throw new Error('Error al obtener los datos del producto');
+    }
+
+    // Devuelve los datos del producto y del usuario al componente
+    return { producto: dataProduct, usuario: userData };
+  } catch (err) {
+    return { error: true, message: err.message };
+  }
+};
 
 export function Producto() {
   const { producto, usuario, error, message } = useLoaderData();
 
   const [isFav, setIsFav] = useState(usuario?.favoritos?.length > 0 ? usuario.favoritos.includes(producto._id) : false);
   const [change, setChange] = useState("Favourite");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (isFav) setChange("removeFavourite");
-    else setChange("addFavourite");
+    if (isFav) {
+      setChange("removeFavourite");
+    } else {
+      setChange("addFavourite");
+    }
   }, [isFav]);
+  
+  // Verificar el estado de la sesión y redirigir si es necesario
+  useEffect(() => {
+    if (error || !usuario?.id) {
+      navigate("/login"); // Redirigir al login si no hay usuario o hay un error
+    }
+  }, [usuario, error, navigate]);
+
+  // Mostrar un loader mientras los datos se cargan o si hay un error
+  if (error || !usuario?.id) {
+    return <p>Loading...</p>; // Puedes personalizar este mensaje o agregar un spinner
+  }
+
+  
 
   const editFavourites = async (userId, productId) => {
     try {

@@ -8,71 +8,65 @@ const jwtUtils = require("../../utils/jwtUtils.cjs");
  * @param {Function} next - Función para pasar al siguiente middleware.
  */
 exports.authenticateToken = (req, res, next) => {
-  const users = req.session.passport.user;
-  if (req.session && users) {
-    // Verifica si existe una sesión de usuario
-    const token = req.session["token"]; // Obtiene el token JWT de la sesión
+  const userId = req.session?.passport?.user;
+
+  if (req.session && userId) {
+    const token = req.session.token;
 
     if (!token) {
-      // Si no hay token, responde con un error 401 (No autorizado) y limpia la cookie
+      // Si no hay token, responde con 401 y limpia la cookie
       res.clearCookie("connect.sid", {
-        httpOnly: false,
+        httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         domain: "localhost",
         sameSite: "strict",
       });
-      return res.redirect(process.env.VITE_HTTP_FRONTEND + "/login");
+      return res.status(401).json({ error: "Unauthorized: No token provided" });
     }
 
-    // Verifica el token JWT usando la función verifyToken del utilitario jwtUtils
     jwtUtils.verifyToken(token, (err, user) => {
       if (err) {
-        // Si hay un error en la verificación del token, destruye la sesión, limpia la cookie y responde con un error 401
+        // Si el token no es válido, destruir la sesión y responder con 401
         req.session.destroy((err) => {
           if (err) {
             console.error("Error al destruir la sesión:", err);
           }
           res.clearCookie("connect.sid", {
-            httpOnly: false,
+            httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             domain: "localhost",
             sameSite: "strict",
           });
-          return res.redirect(process.env.VITE_HTTP_FRONTEND + "/login");
+          return res.status(401).json({ error: "Unauthorized: Invalid token" });
         });
-        return;
-      }
-
-      // Verifica si el ID del usuario en la sesión coincide con el ID del usuario en el token
-      if (users !== user.id) {
-        // Si hay un desajuste de ID, destruye la sesión, limpia la cookie y responde con un error 401
+      } else if (userId !== user.id) {
+        // Si el usuario en la sesión no coincide con el del token
         req.session.destroy((err) => {
           if (err) {
             console.error("Error al destruir la sesión:", err);
           }
           res.clearCookie("connect.sid", {
-            httpOnly: false,
+            httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             domain: "localhost",
             sameSite: "strict",
           });
-          return res.redirect(process.env.VITE_HTTP_FRONTEND + "/login");
+          return res.status(401).json({ error: "Unauthorized: User mismatch" });
         });
-        return;
+      } else {
+        // Token válido y usuario coincidente
+        req.user = user;
+        next();
       }
-
-      // Si todo está bien, adjunta el usuario al objeto de solicitud y pasa al siguiente middleware
-      req.user = user;
-      next();
     });
   } else {
-    // Si no hay sesión, limpia la cookie y responde con un error 401
+    // Si no hay sesión o usuario, responder con 401
     res.clearCookie("connect.sid", {
-      httpOnly: false,
+      httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       domain: "localhost",
       sameSite: "strict",
     });
-    return res.redirect(process.env.VITE_HTTP_FRONTEND + "/login");
+    return res.status(401).json({ error: "Unauthorized: No session found" });
   }
 };

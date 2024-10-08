@@ -1,11 +1,11 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { FilterIcon } from "../assets/filterIcon.jsx";
 import Footer from '../components/Footer';
 import SearchBar from '../components/SearchBar';
 import { TiendaCard } from "../components/tiendaCard";
 import { ViewTitleAndDescription } from "../components/viewTitle&Description";
 import {TrianguloIzquierdo} from "../assets/trianguloIzquierdo.jsx";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export const tiendasLoader = async() => {
     try {
@@ -14,6 +14,10 @@ export const tiendasLoader = async() => {
             credentials: 'include'
         });
         const dataUser = await resUser.json();
+        if (!resUser.ok || !dataUser.userId) {
+            // Si la respuesta no es OK o no hay ID de usuario, devolver un error
+            throw new Error("No session data");
+        }
         let res = await fetch(`/api/workshops`);
         let data = await res.json();
         if (!res.ok) {
@@ -26,8 +30,22 @@ export const tiendasLoader = async() => {
 }
 
 export function Tiendas () {
-    const  { tiendas, usuario, error, message } = useLoaderData();
+    const  { tiendas, usuario, error} = useLoaderData();
     const [searchQuery, setSearchQuery] = useState('');
+    const navigate = useNavigate();
+
+     // Usamos useEffect para verificar el estado de la sesión y redirigir si es necesario
+    useEffect(() => {
+        if (error || !usuario?.userId) {
+        // Si hay un error o no hay datos de usuario, redirigir al login
+        navigate("/login");
+        }
+    }, [usuario, error, navigate]);
+
+    // Si aún no tenemos los datos del usuario, puedes mostrar un loader o algún mensaje
+    if (error || !usuario?.userId) {
+        return <p>Loading...</p>; // O puedes mostrar un mensaje de redirección
+    }
 
     return (
         <>  
