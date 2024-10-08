@@ -4,6 +4,7 @@ const UserController = require("../controllers/usuariosController.cjs");
 const UserValidator = require("../validator/usuariosValidator.cjs");
 const path = require("path");
 const fs = require("fs");
+
 const {
   authenticateToken
 } = require("../../infrastructure/middlewares/authMiddleware.cjs");
@@ -33,11 +34,7 @@ router.get("/session-data", authenticateToken, (req, res) => {
 
 router.post('/cart/', authenticateToken, (req, res) => userController.getCarritoByUserId(req, res)); //recibe el id del usuario por el parametro
 
-/**
- * Ruta para iniciar la autenticación con Github.
- * @param {Object} req - La solicitud HTTP.
- * @param {Object} res - La respuesta HTTP.
- */
+// Ruta para iniciar la autenticación con Github
 router.get(
   "/github",
   passportGithub.authenticate("github", {
@@ -45,18 +42,11 @@ router.get(
   })
 );
 
-/**
- * Ruta de callback para la autenticación con Github.
- * @param {Object} req - La solicitud HTTP.
- * @param {Object} res - La respuesta HTTP.
- */
 router.get(
   "/github/callback",
   passportGithub.authenticate("github", {
     session: false,
-    failureRedirect: process.env.VITE_USE_TUNNEL === "true"
-      ? process.env.VITE_TUNNEL_URL_FRONTEND
-      : process.env.VITE_HTTP_FRONTEND + "/register",
+    failureRedirect: "http://localhost:3000/register",
   }),
   async (req, res) => {
     try {
@@ -75,7 +65,7 @@ router.get(
         const response = await fetch(photoUrl);
 
         if (!response.ok) {
-          throw new Error("Error descargando la foto de perfil");
+          throw new Error('Error descargando la foto de perfil');
         }
 
         // Guarda la imagen descargada en el directorio
@@ -94,20 +84,19 @@ router.get(
           password: "",
           tipo: "comprador",
           fotoPerfil: fileName, // Guarda solo el nombre de la foto en la base de datos
-          genero: "None",
-          fechaNacimiento: "0000-0-0",
+          genero:"None",
+          fechaNacimiento:"0000-0-0",
           direccion: "",
           telefono: "+00 000000000",
-          favoritos: [],
+          favoritos: { productos: [] },
           compras: [],
           talleresInscritos: [],
           cupones: [],
           provider: req.user.provider,
-          carritoCompras: []
         };
 
         // Realiza la petición con fetch para crear el usuario
-        const userResponse = await fetch("/api/users", {
+        const userResponse = await fetch("http://localhost:3001/users", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -131,26 +120,16 @@ router.get(
     }
   }
 );
-
-/**
- * Ruta para iniciar la autenticación con Google.
- * @param {Object} req - La solicitud HTTP.
- * @param {Object} res - La respuesta HTTP.
- */
+// Ruta para iniciar la autenticación con Google
 router.get(
   "/google",
   passportGoogle.authenticate("google", { scope: ["profile", "email"] })
 );
 
-/**
- * Ruta de callback para la autenticación con Google.
- * @param {Object} req - La solicitud HTTP.
- * @param {Object} res - La respuesta HTTP.
- */
 router.get(
   "/google/callback",
   passportGoogle.authenticate("google", {
-    failureRedirect: "/api/login",
+    failureRedirect: "http://localhost:3001/login",
   }),
   async (req, res) => {
     try {
@@ -169,7 +148,7 @@ router.get(
         const response = await fetch(photoUrl);
 
         if (!response.ok) {
-          throw new Error("Error descargando la foto de perfil");
+          throw new Error('Error descargando la foto de perfil');
         }
 
         // Guarda la imagen descargada en el directorio
@@ -188,20 +167,19 @@ router.get(
           password: "",
           tipo: "comprador",
           fotoPerfil: fileName, // Guarda solo el nombre de la foto en la base de datos
-          genero: "None",
-          fechaNacimiento: "0000-0-0",
+          genero:"None",
+          fechaNacimiento:"0000-0-0",
           direccion: "",
           telefono: "+00 000000000",
-          favoritos: [],
+          favoritos: { productos: [] },
           compras: [],
           talleresInscritos: [],
           cupones: [],
           provider: req.user.provider,
-          carritoCompras: []
         };
 
         // Realiza la petición con fetch para crear el usuario
-        const userResponse = await fetch("/api/users", {
+        const userResponse = await fetch("http://localhost:3001/users", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -226,11 +204,7 @@ router.get(
   }
 );
 
-/**
- * Ruta para iniciar la autenticación con Discord.
- * @param {Object} req - La solicitud HTTP.
- * @param {Object} res - La respuesta HTTP.
- */
+// Ruta para iniciar la autenticación con Discord
 router.get(
   "/discord",
   passportDiscord.authenticate("discord", {
@@ -238,15 +212,10 @@ router.get(
   })
 );
 
-/**
- * Ruta de callback para la autenticación con Discord.
- * @param {Object} req - La solicitud HTTP.
- * @param {Object} res - La respuesta HTTP.
- */
 router.get(
   "/discord/callback",
   passportDiscord.authenticate("discord", {
-    failureRedirect: "/api/login",
+    failureRedirect: "http://localhost:3001/login",
   }),
   async (req, res) => {
     try {
@@ -262,12 +231,10 @@ router.get(
         const uploadPath = path.join(__dirname, "../../fotosPerfil/", fileName);
 
         // Descarga la foto de perfil
-        const response = await fetch(
-          `https://cdn.discordapp.com/avatars/${req.user.id}/${photoUrl}.png`
-        );
+        const response = await fetch(`https://cdn.discordapp.com/avatars/${req.user.id}/${photoUrl}.png`);
 
         if (!response.ok) {
-          throw new Error("Error descargando la foto de perfil");
+          throw new Error('Error descargando la foto de perfil');
         }
 
         // Guarda la imagen descargada en el directorio
@@ -282,24 +249,23 @@ router.get(
         const newUser = {
           id: req.user.id,
           nombre: req.user.username,
-          correo: "none@gmail.com",
+          correo: req.user.email || "none@gmail.com",
           password: "",
           tipo: "comprador",
           fotoPerfil: fileName, // Guarda solo el nombre de la foto en la base de datos
-          genero: "None",
-          fechaNacimiento: "0000-0-0",
+          genero:"None",
+          fechaNacimiento:"0000-0-0",
           direccion: "",
           telefono: "+00 000000000",
-          favoritos: [],
+          favoritos: { productos: [] },
           compras: [],
           talleresInscritos: [],
           cupones: [],
           provider: req.user.provider,
-          carritoCompras: []
         };
 
         // Realiza la petición con fetch para crear el usuario
-        const userResponse = await fetch("/api/users", {
+        const userResponse = await fetch("http://localhost:3001/users", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
