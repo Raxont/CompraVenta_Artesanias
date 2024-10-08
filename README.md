@@ -184,11 +184,11 @@ VITE_MONGO_DB_NAME=
   - Ejemplo:
     ```json
     {
-      "usuarioId": "4589123476",
+      "id": "4589123476",
       "nombre": "Carlos",
       "correo": "carlitos123@gmail.com",
       "password": "123456",
-      "tipo": "vendedor",
+      "tipo": "comprador",
       "fotoPerfil": "https://example.com/perfil/carlos.jpg",
       "genero": "Masculino",
       "fechaNacimiento": "1990-03-15",
@@ -375,6 +375,125 @@ VITE_MONGO_DB_NAME=
 - **Parámetros**:
   - `userId`: ID del usuario.
   - `productId`: ID del producto a eliminar.
+
+------
+
+
+
+## Productos
+
+### 1. **Obtener todos los productos**
+   - URL:** `/`
+   - **Método:** `GET`
+   - Descripción:** Obtiene una lista de todos los productos.
+   - Solicitud:**
+     - Sin parámetros
+   - Respuestas:**
+     - `200 OK`: Devuelve la lista de productos.
+     - `400 Bad Request`: Errores de validación o petición malformada.
+     - `500 Error interno del servidor`: Cualquier otro error del servidor.
+
+### 2. **Obtener producto por ID
+   - URL: `/:id`.
+   - **Método:** `GET`
+   - Descripción:** Recupera un producto por su ID único.
+   - Parámetros de la petición
+     - `id` (path param): El ID del producto (validado).
+   - Respuestas:**
+     - `200 OK`: Devuelve los detalles del producto.
+     - `400 Bad Request`: Errores de validación para el ID del producto.
+     - `404 No encontrado`: Si no se encuentra el producto con el ID dado.
+     - `500 Error interno del servidor`: Cualquier otro error del servidor.
+
+### 3. **Buscar productos por nombre**
+   - URL:`/search
+   - **Método:** `GET`
+   - **Descripción:** Busca productos por su nombre utilizando el parámetro de consulta `name`.
+   - Parámetros de la consulta:**
+     - `nombre`: El nombre del producto a buscar.
+   - Respuestas:**
+     - `200 OK`: Devuelve los productos que coinciden con los criterios de búsqueda.
+     - `500 Error interno del servidor`: Cualquier otro error del servidor.
+
+### 4. **Obtener productos por categoría**
+- **URL:**`/categoría/:categoría`
+- **Método:** `GET`
+- **Descripción:** Recupera productos por su categoría.
+- Parámetros de la petición
+     - `categoria` (path param): La categoría de los productos (validado).
+- Respuestas:**
+     - `200 OK`: Devuelve la lista de productos de la categoría.
+     - `400 Bad Request`: Errores de validación.
+     - `500 Error interno del servidor`: Cualquier otro error del servidor.
+- **Categorias:**
+  - Textileria
+  - Ceramica
+  - Orfebreria
+  - 'Talla en Piedra
+  - 'Talla en Madera
+  - Bordado
+  - Joyeria
+  - Hojalateria
+  - Estampado
+  - Pintura Tradicional
+
+### 5. **Obtener productos por categoría para descuentos**
+- URL: `/discounts/:categoria`.
+- **Método:** `GET`
+- **Descripción:** Recupera productos por su categoría para descuentos.
+- Parámetros de la petición
+     - `categoria` (path param): La categoría de productos para descuentos (validada).
+- **Respuestas:**
+     - `200 OK`: Devuelve la lista de productos con descuento.
+     - `400 Bad Request`: Errores de validación.
+     - `500 Error interno del servidor`: Cualquier otro error del servidor.
+- **Categorias:**
+  - Textileria
+  - Ceramica
+  - Orfebreria
+  - 'Talla en Piedra
+  - 'Talla en Madera
+  - Bordado
+  - Joyeria
+  - Hojalateria
+  - Estampado
+  - Pintura Tradicional
+
+### 6. **Obtener Productos Favoritos por Usuario**
+- URL:`/favourites/:id/:categoria`.
+- **Método:** `GET`
+- **Descripción:** Recupera los productos favoritos de un usuario filtrados por categoría.
+- Parámetros de la petición
+     - `id` (path param): El ID del usuario (validado).
+     - `categoria` (path param): La categoría del producto.
+- Respuestas:**
+     - `200 OK`: Devuelve la lista de productos favoritos de la categoría especificada.
+     - `400 Bad Request`: Errores de validación o datos incorrectos.
+     - `404 No encontrado`: Si no se encuentra el usuario o los productos de la categoría especificada.
+     - `500 Error interno del servidor`: Cualquier otro error del servidor.
+- **Categorias:**
+  - Textileria
+  - Ceramica
+  - Orfebreria
+  - 'Talla en Piedra
+  - 'Talla en Madera
+  - Bordado
+  - Joyeria
+  - Hojalateria
+  - Estampado
+  - Pintura Tradicional
+
+
+## Validadores
+
+### Validador de productos
+La API utiliza `productsValidator` para validar los datos de las solicitudes entrantes para IDs, categorías y datos de producto, asegurando que los datos están limpios y evitando entradas erróneas.
+
+## Tratamiento de errores
+Cada método captura cualquier error, y cuando se produce un error, la API devuelve el código de estado HTTP apropiado junto con una respuesta JSON que contiene el mensaje de error. Por ejemplo
+- `400 Bad Request`: Para problemas de validación.
+- `404 No encontrado`: Si faltan recursos (por ejemplo, productos o usuarios).
+- `500 Error interno del servidor`: Para cualquier error de servidor no gestionado.
 
 ------
 
