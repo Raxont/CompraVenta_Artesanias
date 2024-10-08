@@ -3,14 +3,13 @@ const cors = require("cors"); // Importa el middleware CORS para gestionar las s
 //* Configuración de CORS (Cross-Origin Resource Sharing)
 /**
  * Configuración del middleware CORS para permitir solicitudes desde un origen específico.
- * @type {Object} corsConfig - Configuración de CORS.
- * @property {string} origin - Especifica el origen permitido para las solicitudes.
- * @property {Array<string>} methods - Métodos HTTP permitidos para las solicitudes.
- * @property {Array<string>} allowedHeaders - Cabeceras permitidas en las solicitudes.
- * @property {boolean} credentials - Permitir el envío de cookies y credenciales con solicitudes CORS.
+ * La URL de origen se construye en base a la variable de entorno VITE_USE_TUNNEL.
+ * Si está en true, se usa VITE_TUNNEL_URL_FRONTEND, de lo contrario, VITE_HTTP_FRONTEND.
  */
 const corsConfig = cors({
-  origin: "http://localhost:3000", // Permitir solicitudes solo desde este origen específico
+  origin: process.env.VITE_USE_TUNNEL === "true"
+    ? process.env.VITE_TUNNEL_URL_FRONTEND
+    : process.env.VITE_HTTP_FRONTEND, // Origen permitido según las variables de entorno
   methods: ["GET", "POST", "PUT", "DELETE"], // Métodos HTTP permitidos para las solicitudes
   allowedHeaders: ["Content-Type", "Authorization", "x-version"], // Cabeceras permitidas en las solicitudes
   credentials: true, // Permitir el envío de cookies y credenciales con solicitudes CORS

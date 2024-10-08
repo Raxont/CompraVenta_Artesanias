@@ -256,20 +256,25 @@ class UserController {
    */
   async handlePassportLogin(req, res, redireccion) {
     const result = await this.passportLogin(req, res);
-
+  
     if (res.headersSent) return;
-
+  
     if (result.error) {
       return res.status(500).json({ message: result.error });
     }
+    
     req.session.token = result.token;
-
+  
+    const redirectUrl = process.env.VITE_USE_TUNNEL === "true"
+      ? process.env.VITE_TUNNEL_URL_FRONEND
+      : process.env.VITE_HTTP_FRONTEND; // Utiliza la URL de backend según la variable de entorno
+  
     res.status(200).send(`<!DOCTYPE html>
         <html lang="en">
         <body></body>
         <script>
             if (window.opener) {
-                window.opener.location.href = 'http://localhost:3000/${redireccion}';
+                window.opener.location.href = '${redirectUrl}/${redireccion}';
                 window.close();
             } else {
                 console.error('No opener window found.');
@@ -277,6 +282,7 @@ class UserController {
         </script>
         </html>`);
   }
+  
 
   /**
    * Inicia sesión un usuario.

@@ -53,7 +53,7 @@ VITE_PORT_FRONTEND=3000
 
 # Configuraciones opcionales para túnel
 
-VITE_TUNNEL_URL=
+VITE_TUNNEL_URL_BACKEND=
 VITE_USE_TUNNEL=false
 
 # Configuraciones de la base de datos MongoDB
@@ -74,7 +74,7 @@ VITE_MONGO_DB_NAME=
 - `VITE_HOST`: Nombre del host donde se está ejecutando la aplicación.
 - `VITE_PORT_BACKEND`: Puerto donde corre el backend del proyecto.
 - `VITE_PORT_FRONTEND`: Puerto donde corre el frontend del proyecto.
-- `VITE_TUNNEL_URL`: URL de un túnel externo (opcional, usado en desarrollo remoto).
+- `VITE_TUNNEL_URL_BACKEND`: URL de un túnel externo (opcional, usado en desarrollo remoto).
 - `VITE_USE_TUNNEL`: Booleano para habilitar o deshabilitar el uso del túnel.
 - `VITE_MONGO_ACCESS`: URL de conexión para la base de datos de MongoDB.
 - `VITE_MONGO_USER`: Usuario para la conexión a MongoDB.

@@ -17,7 +17,11 @@ const Logout = () => {
 
 			if (response.ok) {
 				// Redirige al usuario a la página de login después de cerrar sesión
-				window.location.href = 'http://localhost:3000/login';
+				const loginUrl = import.meta.env.VITE_USE_TUNNEL === "true"
+					? import.meta.env.VITE_TUNNEL_URL_FRONEND
+					: import.meta.env.VITE_HTTP_FRONTEND; // Utiliza la URL de backend según la variable de entorno
+
+				window.location.href = `${loginUrl}/login`;
 			} else {
 				setError('Error en el logout. Intenta nuevamente.');
 			}
@@ -26,6 +30,7 @@ const Logout = () => {
 			setError('Error en la solicitud. Intenta nuevamente.');
 		}
 	};
+
 
 	return (
 		<>

@@ -1,5 +1,5 @@
 import  { useEffect, useState } from 'react';
-import { useLocation, redirect , useLoaderData } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, useLoaderData } from 'react-router-dom';
 import SearchBar from "../components/SearchBar";
 import Footer from '../components/Footer';
 import SecccionCartCard from '../components/SeccionCartCard';
@@ -36,13 +36,14 @@ export const cartLoader = async () => {
 };
 
 export function Cart() {
-  const { usuario} = useLoaderData()
   const [searchQuery, setSearchQuery] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [cart, setCart] = useState(null); // Inicializar como null
   const [userId, setUserId] = useState(null); // Almacena el userId
   const [coupon, setCoupon] = useState(null); // Almacena el cupón del usuario
-
+  const navigate = useNavigate();
+  const { couponCode } = useParams();
+  const { usuario, error, message} = useLoaderData()
   const location = useLocation(); // Accede a la ubicación actual
   const cuponCode = location.state?.cuponCode; // Lee el estado enviado con navigate
 

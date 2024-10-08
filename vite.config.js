@@ -5,7 +5,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
 
   const apiUrl = env.VITE_USE_TUNNEL === 'true'
-    ? env.VITE_TUNNEL_URL
+    ? env.VITE_TUNNEL_URL_BACKEND
     : `http://${env.VITE_HOST || 'localhost'}:${env.VITE_PORT_BACKEND || '3001'}`;
 
   console.log('API URL:', apiUrl);

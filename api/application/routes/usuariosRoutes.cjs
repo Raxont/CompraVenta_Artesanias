@@ -20,11 +20,11 @@ const userValidator = new UserValidator();
  * @param {Object} req - La solicitud HTTP.
  * @param {Object} res - La respuesta HTTP.
  */
-router.get("/session-data", authenticateToken, (req, res) => {  
+router.get("/session-data", authenticateToken, (req, res) => {
   if (req.session?.passport?.user) {
     const userId = req.session.passport.user; // Obtén el ID del usuario
     const token = req.session.token || null;  // Obtén el token del usuario (si existe)
-    
+
     res.json({ userId, token });
   } else {
     res.status(404).json({ error: "No session data found" });
@@ -54,7 +54,9 @@ router.get(
   "/github/callback",
   passportGithub.authenticate("github", {
     session: false,
-    failureRedirect: "http://localhost:3000/register",
+    failureRedirect: process.env.VITE_USE_TUNNEL === "true"
+      ? process.env.VITE_TUNNEL_URL_FRONTEND
+      : process.env.VITE_HTTP_FRONTEND + "/register",
   }),
   async (req, res) => {
     try {
@@ -101,7 +103,7 @@ router.get(
           talleresInscritos: [],
           cupones: [],
           provider: req.user.provider,
-          carritoCompras:[]
+          carritoCompras: []
         };
 
         // Realiza la petición con fetch para crear el usuario
@@ -195,7 +197,7 @@ router.get(
           talleresInscritos: [],
           cupones: [],
           provider: req.user.provider,
-          carritoCompras:[]
+          carritoCompras: []
         };
 
         // Realiza la petición con fetch para crear el usuario
@@ -293,7 +295,7 @@ router.get(
           talleresInscritos: [],
           cupones: [],
           provider: req.user.provider,
-          carritoCompras:[]
+          carritoCompras: []
         };
 
         // Realiza la petición con fetch para crear el usuario
@@ -330,60 +332,60 @@ router.get("/:id", authenticateToken, (req, res) => userController.getUser(req, 
 router.get("/", authenticateToken, (req, res) => userController.getUsers(req, res));
 
 router.post("/upload-profile-picture", authenticateToken, async (req, res) => {
-    const userId = req.session.passport.user;
-    if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).json({ message: "No se ha subido ningún archivo." });
-    }
-  
-    const file = req.files.file;
-    const newImageName = Date.now() + "-" + file.name; // Genera un nombre único para la imagen
-    const uploadPath = path.join(__dirname, "../../fotosPerfil/", newImageName);
-  
-    try {
-      // Mueve el archivo a la carpeta de destino
-      file.mv(uploadPath, async (err) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).json({ message: "Error al subir la imagen." });
+  const userId = req.session.passport.user;
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).json({ message: "No se ha subido ningún archivo." });
+  }
+
+  const file = req.files.file;
+  const newImageName = Date.now() + "-" + file.name; // Genera un nombre único para la imagen
+  const uploadPath = path.join(__dirname, "../../fotosPerfil/", newImageName);
+
+  try {
+    // Mueve el archivo a la carpeta de destino
+    file.mv(uploadPath, async (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: "Error al subir la imagen." });
+      }
+
+      // Encuentra al usuario en la base de datos
+      const user = await userController.findUserById(userId);
+      console.log("🚀 ~ file.mv ~ user:", user)
+      if (!user) {
+        return res.status(404).json({ message: "Usuario no encontrado." });
+      }
+
+      // Si el usuario ya tiene una imagen, elimina la antigua
+      if (user.fotoPerfil) {
+        const oldImagePath = path.join(
+          __dirname,
+          "../../fotosPerfil/",
+          user.fotoPerfil
+        );
+        if (fs.existsSync(oldImagePath)) {
+          fs.unlinkSync(oldImagePath); // Elimina la imagen antigua
         }
-  
-        // Encuentra al usuario en la base de datos
-        const user = await userController.findUserById(userId);
-        console.log("🚀 ~ file.mv ~ user:", user)
-        if (!user) {
-          return res.status(404).json({ message: "Usuario no encontrado." });
-        }
-  
-        // Si el usuario ya tiene una imagen, elimina la antigua
-        if (user.fotoPerfil) {
-          const oldImagePath = path.join(
-            __dirname,
-            "../../fotosPerfil/",
-            user.fotoPerfil
-          );
-          if (fs.existsSync(oldImagePath)) {
-            fs.unlinkSync(oldImagePath); // Elimina la imagen antigua
-          }
-        }
-  
-        // Actualiza la imagen de perfil en la base de datos
-        const updatedUser = await userController.updateUserById(userId, {
-          fotoPerfil: newImageName,
-        });
-  
-        if (!updatedUser) {
-          return res.status(404).json({ message: 'Usuario no encontrado.' });
-        }
-  
-        // Envía la respuesta con la nueva ruta de la imagen
-        res.status(200).json({ newImagePath: newImageName });
+      }
+
+      // Actualiza la imagen de perfil en la base de datos
+      const updatedUser = await userController.updateUserById(userId, {
+        fotoPerfil: newImageName,
       });
-    } catch (error) {
-      console.error(error);
-      res
-        .status(500)
-        .json({ message: "Error al actualizar la imagen de perfil." });
-    }
+
+      if (!updatedUser) {
+        return res.status(404).json({ message: 'Usuario no encontrado.' });
+      }
+
+      // Envía la respuesta con la nueva ruta de la imagen
+      res.status(200).json({ newImagePath: newImageName });
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Error al actualizar la imagen de perfil." });
+  }
 });
 
 /**
@@ -406,7 +408,7 @@ router.post("/loginAccount", async (req, res) => {
  * @param {Object} res - La respuesta HTTP.
  * @returns {Promise<void>}
  */
-router.post("/logout",  async (req, res) => {
+router.post("/logout", async (req, res) => {
   try {
     await userController.logout(req, res);
   } catch (error) {
@@ -422,13 +424,13 @@ router.post("/logout",  async (req, res) => {
  */
 router.post("/", (req, res) => userController.createUser(req, res));
 
-router.put('/addFavourite/:userId/:productId', authenticateToken,  userValidator.validateUpdateFavouriteProducts(), (req, res) => userController.pushFavouriteProductsToUser(req, res));
+router.put('/addFavourite/:userId/:productId', authenticateToken, userValidator.validateUpdateFavouriteProducts(), (req, res) => userController.pushFavouriteProductsToUser(req, res));
 
-router.put('/removeFavourite/:userId/:productId', authenticateToken,  userValidator.validateUpdateFavouriteProducts(), (req, res) => userController.pullFavouriteProductsToUser(req, res));
+router.put('/removeFavourite/:userId/:productId', authenticateToken, userValidator.validateUpdateFavouriteProducts(), (req, res) => userController.pullFavouriteProductsToUser(req, res));
 
 router.put('/addToCart/:userId', authenticateToken, (req, res) => userController.addToCart(req, res));
-router.put('/cart/increase', authenticateToken, (req, res) => userController.increaseProduct(req, res)); 
-router.put('/cart/decrease', authenticateToken, (req, res) => userController.decreaseProduct(req, res)); 
+router.put('/cart/increase', authenticateToken, (req, res) => userController.increaseProduct(req, res));
+router.put('/cart/decrease', authenticateToken, (req, res) => userController.decreaseProduct(req, res));
 /**
  * Ruta para actualizar la informacion de un usuario.
  * @param {Object} req - La solicitud HTTP, contiene los datos del usuario en el cuerpo de la solicitud.
@@ -437,7 +439,7 @@ router.put('/cart/decrease', authenticateToken, (req, res) => userController.dec
  */
 router.put("/:id", authenticateToken, (req, res) => userController.updateUserForms(req, res));
 
-router.delete('/cart', authenticateToken, (req, res) => userController.removeToCart(req, res)); 
+router.delete('/cart', authenticateToken, (req, res) => userController.removeToCart(req, res));
 
 /**
  * Ruta para eliminar un usuario creado.

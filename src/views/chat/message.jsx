@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useParams,useNavigate  } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import io from 'socket.io-client';
 import { initTheme } from '../../tools/theme';
 import PurchaseHistoryButtonChat from "../../components/PurchaseHistoryButton-chat";
 
-const socket = io('/api');
+const url = import.meta.env.VITE_USE_TUNNEL === "true"
+  ? import.meta.env.VITE_TUNNEL_URL_BACKEND
+  : import.meta.env.VITE_HTTP_BACKEND;
+const socket = io(`${url}`);
 
 export function Chat() {
   initTheme();
@@ -26,7 +29,7 @@ export function Chat() {
 
         if (response.ok) {
           const data = await response.json();
-          
+
           // Asegúrate de que el userId esté presente
           if (data.userId) {
             setUser_id(data.userId);
@@ -58,7 +61,7 @@ export function Chat() {
     if (receptorId) {
       fetchTaller();
     }
-  }, [receptorId,navigate]);
+  }, [receptorId, navigate]);
 
   useEffect(() => {
     // Emitir joinRoom cuando userId y taller estén disponibles
@@ -115,18 +118,16 @@ export function Chat() {
         {messages.map((msg, index) => (
           <div
             key={index}
-            className={`message p-2 rounded-md w-[70%] max-w-md ${
-              msg.remitenteId === userId 
+            className={`message p-2 rounded-md w-[70%] max-w-md ${msg.remitenteId === userId
                 ? 'bg-primary dark:bg-dark-quintier dark:text-dark-bg bg-light-bg text-dark-bg self-end ml-auto'
                 : 'bg-red-800 dark:bg-dark-primary dark:text-dark-light text-cuatertiary self-start mr-auto'
-            }`}
+              }`}
           >
             <p>{msg.contenido}</p>
-            <span className={`text-xs ${
-              msg.remitenteId === userId 
+            <span className={`text-xs ${msg.remitenteId === userId
                 ? 'dark:text-bg'
                 : 'dark:text-light'
-            }`}>
+              }`}>
               {new Date(msg.fecha).toLocaleTimeString()}
             </span>
           </div>
