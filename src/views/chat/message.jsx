@@ -4,7 +4,10 @@ import io from 'socket.io-client';
 import { initTheme } from '../../tools/theme';
 import PurchaseHistoryButtonChat from "../../components/PurchaseHistoryButton-chat";
 
-const socket = io('http://localhost:3001');
+const url = import.meta.env.VITE_USE_TUNNEL === "true"
+  ? import.meta.env.VITE_TUNNEL_URL_BACKEND
+  : import.meta.env.VITE_HTTP_BACKEND;
+const socket = io(`${url}`);
 
 export function Chat() {
   initTheme();

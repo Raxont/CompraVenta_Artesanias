@@ -1,5 +1,5 @@
 import  { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams, useLoaderData } from 'react-router-dom';
+import { useLocation, useNavigate, useParams,redirect, useLoaderData } from 'react-router-dom';
 import SearchBar from "../components/SearchBar";
 import Footer from '../components/Footer';
 import SecccionCartCard from '../components/SeccionCartCard';
