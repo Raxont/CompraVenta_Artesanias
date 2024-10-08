@@ -401,7 +401,7 @@ class UserController {
     try {
         const { usuarioId, productoId } = req.body;
         await this.userService.increaseProductToCart(usuarioId, productoId);
-        return res.status(200).json({ message: 'Producto retirado del carrito exitosamente' });
+        return res.status(200).json({ message: 'Producto añadido al carrito exitosamente' });
     } catch (error) {
         const errorObj = JSON.parse(error.message);
         return res.status(errorObj.status).json({ message: errorObj.message });
