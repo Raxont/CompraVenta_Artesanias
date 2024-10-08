@@ -17,7 +17,6 @@ import Cupon from "./views/Cupon";
 import Settings from "./views/Settings";
 import Comments from "./views/Comments";
 import PreguntasFrecuentes from "./views/Questions";
-import { CambioColor } from "./views/color/CambiodeColor";
 import { Inicio } from "./views/register/Inicio";
 import { Phoneform } from "./views/register/Phone";
 import { Login } from "./views/register/Login";
@@ -28,10 +27,6 @@ import {Chat} from "./views/chat/message"
 
 import  Compras from "./views/Compras";
 const routes = createBrowserRouter([
-  {
-    path: "/color",
-    element: <CambioColor/>,
-  },
   {
     path: "/",
     element: <Inicio/>,
