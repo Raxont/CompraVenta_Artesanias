@@ -103,11 +103,64 @@ VITE_MONGO_DB_NAME=
    npm run dev
    ```
 
+### Dependencias
+
+- **bcryptjs**: Biblioteca para hash y verificación de contraseñas de manera segura.
+- **boxicons**: Iconos para utilizar en el frontend del proyecto.
+- **cookie-parser**: Middleware para analizar cookies en las solicitudes HTTP.
+- **cors**: Permite configurar políticas de CORS (Cross-Origin Resource Sharing) en el servidor.
+- **express**: Framework para manejar rutas y solicitudes HTTP en Node.js.
+- **express-fileupload**: Middleware para manejar la carga de archivos en Express.
+- **express-rate-limit**: Limita la tasa de peticiones para proteger contra ataques de fuerza bruta.
+- **express-session**: Maneja sesiones del usuario en Express.
+- **express-validator**: Conjunto de middlewares para la validación de datos en Express.
+- **flowbite**: Complemento de Tailwind CSS que ofrece componentes UI predefinidos.
+- **fs**: Módulo para interactuar con el sistema de archivos.
+- **https**: Módulo para hacer peticiones HTTPS.
+- **jsonwebtoken**: Permite generar y verificar tokens JWT para autenticación.
+- **mongodb**: Driver oficial para conectar y manipular bases de datos MongoDB.
+- **morgan**: Middleware para registrar las solicitudes HTTP en el servidor.
+- **node-fetch**: Biblioteca para realizar peticiones HTTP desde el servidor.
+- **passport**: Middleware de autenticación para Express, utilizado con diversas estrategias de autenticación.
+- **passport-discord**: Estrategia de autenticación para Passport con OAuth de Discord.
+- **passport-github**: Estrategia de autenticación para Passport con OAuth de GitHub.
+- **passport-github2**: Otra versión del autenticador de GitHub con características adicionales.
+- **passport-google-oauth20**: Estrategia de autenticación para Passport con OAuth de Google.
+- **react**: Biblioteca para construir interfaces de usuario (frontend).
+- **react-dom**: Soporte para manipular el DOM con React.
+- **react-qr-code**: Generador de códigos QR en React.
+- **react-router-dom**: Maneja las rutas de navegación en aplicaciones React.
+- **redis**: Base de datos en memoria utilizada para almacenar sesiones y caché.
+- **socket.io**: Permite comunicación en tiempo real entre el servidor y el cliente.
+- **socket.io-client**: Cliente de Socket.IO para conectarse al servidor en tiempo real.
+
+### Dependencias de Desarrollo
+
+- **@eslint/js**: Reglas básicas de ESLint para asegurar la calidad del código.
+- **@types/react**: Tipos para TypeScript al trabajar con React.
+- **@types/react-dom**: Tipos para React DOM en TypeScript.
+- **@vitejs/plugin-react**: Plugin para integrar React en proyectos con Vite.
+- **autoprefixer**: Añade automáticamente prefijos CSS para asegurar compatibilidad entre navegadores.
+- **concurrently**: Ejecuta múltiples scripts de npm al mismo tiempo.
+- **cookie-parser**: Igual que en dependencias, para manejar cookies.
+- **eslint**: Linter para identificar y corregir problemas en el código JavaScript.
+- **eslint-plugin-react**: Reglas específicas de React para ESLint.
+- **eslint-plugin-react-hooks**: Reglas de ESLint para asegurar el uso correcto de hooks en React.
+- **eslint-plugin-react-refresh**: Permite hacer recargas rápidas en desarrollo de React.
+- **express**: Igual que en dependencias, para manejo de rutas y solicitudes HTTP.
+- **express-rate-limit**: Igual que en dependencias, para limitar la tasa de peticiones.
+- **express-session**: Igual que en dependencias, para manejo de sesiones.
+- **express-validator**: Igual que en dependencias, para validación de datos.
+- **globals**: Define variables globales que se pueden utilizar en el proyecto.
+- **jsonwebtoken**: Igual que en dependencias, para generación y verificación de JWT.
+- **mongodb**: Igual que en dependencias, para conexión con bases de datos MongoDB.
+- **postcss**: Procesador de CSS que permite utilizar plugins como `autoprefixer`.
+- **tailwindcss**: Framework de CSS para diseño de interfaces basado en utilidades.
+- **vite**: Herramienta rápida de construcción para el desarrollo de aplicaciones web modernas.
+
 
 
 # Explicación de los Endpoints
-
-
 
 ## **Usuarios**
 
@@ -296,10 +349,138 @@ VITE_MONGO_DB_NAME=
   - `userId`: ID del usuario.
   - `productId`: ID del producto a eliminar.
 
+------
+
+
+
+## Pedidos
+
+### 1. **Obtener todas las solicitudes**
+
+- **URL:** `requests/`
+- **Método:** `GET`
+- **Descripción:** Obtiene todos los pedidos del sistema.
+- **Solicitud:** Sin parámetros.
+- **Respuestas:**
+- `200 OK`: Devuelve la lista de todas las solicitudes.
+- `500 Error interno del servidor`: Si hay un problema con la obtención de datos.
+
+### 2. **Obtener pedidos por ID de usuario**
+
+- **URL:** `requests/user/:id`
+- **Método:** `GET`
+- **Descripción:** Obtiene todos los pedidos realizados por un usuario específico.
+- **Parámetros de la solicitud:**
+- `id`: ID de usuario (validado).
+- **Respuestas:**
+- `200 OK`: Devuelve los pedidos del usuario especificado.
+- `400 Solicitud incorrecta`: Si el ID de usuario no es válido.
+- `500 Error interno del servidor`: si hay un problema con la obtención de datos.
+
+### 3. **Obtener pedido por ID**
+
+- **URL:** `requests/:id`
+- **Método:** `GET`
+- **Descripción:** Obtiene un solo pedido por su ID.
+- **Parámetros de la solicitud:**
+- `id`: ID del pedido (validada).
+- **Respuestas:**
+- `200 OK`: devuelve los detalles del pedido.
+- `400 Solicitud incorrecta`: error de validación para una ID de pedido no válido.
+- `404 No encontrado`: si no se encuentra el pedido con la ID especificada.
+- `500 Error interno del servidor`: si hay un problema con la obtención de datos.
+
+### 4. **Crear un nuevo pedido**
+
+- **URL:** `requests/`
+
+- **Método:** `POST`
+
+- **Descripción:** Crea un nuevo pedido.
+
+- **Cuerpo de la solicitud:**
+
+  - Ejemplo:
+
+    ```json
+     {
+      usuarioId: "66ffeb1ffc73a69a66883a4d",
+      productos: [
+        {
+          productoId: "650f4c29a5f1bc0987654346",
+          cantidad: 10,
+          precio: 60
+        },
+        {
+          productoId: "650f4c29a5f1bc0987654347",
+          cantidad: 5,
+          precio: 30
+        }
+      ],
+      total: 750,
+      fecha: "2024-10-08T12:30:00.000Z",
+      estado: "en camino"
+    }
+    
+    ```
+
+- **Respuestas:**
+
+- `201 Created`: Pedido creada exitosamente.
+
+- `400 Bad Request`: Error de validación en los datos del pedido.
+
+- `500 Internal Server Error`: Si hay un problema con la creación del pedido.
+
+### 5. **Eliminar pedido por ID**
+
+- **URL:** `requests/:id`
+- **Método:** `DELETE`
+- **Descripción:** Elimina un pedido existente por su ID.
+- **Parámetros de solicitud:**
+- `id`: ID de solicitud (validada).
+- **Respuestas:**
+- `204 Sin contenido`: Pedido eliminada correctamente.
+- `400 Solicitud incorrecta`: Error de validación o ID de solicitud no válida.
+- `404 Not Found`: Si no se encuentra la solicitud con el ID especificado.
+- `500 Internal Server Error`: Si hay un problema con la eliminación de la solicitud.
+
+### 6. **Buscar pedidos por nombre**
+
+- **URL:** `requests/search`
+- **Método:** `GET`
+- **Descripción:** Busca solicitudes por su nombre utilizando el parámetro de consulta `name`.
+- **Parámetros de consulta de solicitud:**
+- `name`: Nombre de la solicitud que se buscará.
+- **Respuestas:**
+- `200 OK`: Devuelve las solicitudes coincidentes.
+- `500 Error interno del servidor`: Si hay un problema con la búsqueda.
+
+## Validadores
+
+### Validador de solicitudes
+
+La validación se administra utilizando `express-validator` para garantizar la integridad de los datos entrantes:
+
+- Valida `id` para las solicitudes, lo que garantiza que tenga un formato válido.
+- Valida los datos del cuerpo de la solicitud al crear o actualizar una solicitud para evitar datos mal formados.
+
+## Manejo de errores
+
+Cada método incluye el manejo de errores con los códigos de estado HTTP adecuados:
+
+- `400 Solicitud incorrecta`: Si se producen errores de validación.
+- `404 No encontrado`: si no se encuentra el recurso (por ejemplo, la solicitud).
+- `500 Error interno del servidor`: para problemas o excepciones no controlados del servidor.
+
+------
+
+
+
 ## Pagos
 
 ### 1. **Obtener todos los pagos**
-- **URL:** `/`
+- **URL:** `payments/`
 - **Método:** `GET`
 - **Descripción:** Recupera una lista de todos los pagos.
 - **Solicitud:**
@@ -308,8 +489,6 @@ VITE_MONGO_DB_NAME=
   - `200 OK`: Devuelve la lista de pagos.
   - `400 Solicitud incorrecta`: Errores de validación o solicitud mal formada.
   - `500 Error interno del servidor`: Cualquier otro error del servidor.
-
-
 
 
 ### 2. **Obtener pago por ID**
@@ -328,17 +507,11 @@ VITE_MONGO_DB_NAME=
   - `404 Not Found`: Si no se encuentra el pago con el ID indicado.
   - `500 Internal Server Error`: Cualquier otro error del servidor.
 
-- **Ejemplo:** 
-
-  ```js
-  http://localhost:3001/payments/66ffeb1ffc73a69a66883a4e
-  ```
-
   
 
 
 ### 3. **Crear un nuevo pago**
-- **URL:** `/`
+- **URL:** `payments/`
 
 - **Método:** `POST`
 
@@ -357,49 +530,18 @@ VITE_MONGO_DB_NAME=
   ```js
   {
       "usuarioId": "534778591859441674",
-      "pedidoId": "67890",
-      "monto": 100,
-      "fecha": "2024-10-07T12:00:00Z",
+      "pedidoId": "el id del pedido recien ingresado",
+      "monto": 750,
+      "fecha": "2024-10-08T12:00:00Z",
       "metodoPago": "tarjeta"
   }
   ```
 
 
 
-### 4. **Actualizar pago por ID**
-
-- **URL:** `/:id`
-- **Método:** `PUT`
-- **Descripción:** Actualiza un pago existente por su ID.
-- **Parámetros de la solicitud:**
-  - `id` (parámetro de ruta): el ID del pago (validado).
-
-- **Cuerpo de la solicitud:**
-  - Datos de pago actualizados (validados)
-
-- **Respuestas:**
-  - `200 OK`: Pago actualizado correctamente.
-  - `400 Solicitud incorrecta`: Errores de validación o solicitud mal formada.
-  - `404 No encontrado`: Si no se encuentra el pago con el ID indicado.
-  - `500 Error interno del servidor`: Cualquier otro error del servidor.
-
-
-### 5. **Eliminar pago por ID**
-- **URL:** `/:id`
-- **Método:** `DELETE`
-- **Descripción:** Elimina un pago por su ID único.
-- **Parámetros de la solicitud:**
-  - `id` (parámetro de ruta): el ID del pago (validado).
-
-- **Respuestas:**
-  - `204 Sin contenido`: Pago eliminado correctamente.
-  - `400 Bad Request`: errores de validación o solicitud mal formada.
-  - `404 Not Found`: si no se encuentra el pago con la identificación dada.
-  - `500 Internal Server Error`: cualquier otro error del servidor.
-
 
 ### 6. **Buscar pagos por nombre**
-- **URL:** `/search`
+- **URL:** `payments/search`
 - **Método:** `GET`
 - **Descripción:** busca pagos por su nombre utilizando el parámetro de consulta `name`.
 - **Parámetros de consulta de solicitud:**
@@ -429,110 +571,10 @@ Cada método detecta los errores y devuelve el código de estado HTTP correspond
 
 
 
-## Pedidos
-
-### 1. **Obtener todas las solicitudes**
-- **URL:** `/`
-- **Método:** `GET`
-- **Descripción:** Obtiene todos los pedidos del sistema.
-- **Solicitud:** Sin parámetros.
-- **Respuestas:**
-- `200 OK`: Devuelve la lista de todas las solicitudes.
-- `500 Error interno del servidor`: Si hay un problema con la obtención de datos.
-
-### 2. **Obtener pedidos por ID de usuario**
-- **URL:** `/user/:id`
-- **Método:** `GET`
-- **Descripción:** Obtiene todos los pedidos realizados por un usuario específico.
-- **Parámetros de la solicitud:**
-- `id`: ID de usuario (validado).
-- **Respuestas:**
-- `200 OK`: Devuelve los pedidos del usuario especificado.
-- `400 Solicitud incorrecta`: Si el ID de usuario no es válido.
-- `500 Error interno del servidor`: si hay un problema con la obtención de datos.
-
-### 3. **Obtener pedido por ID**
-- **URL:** `/:id`
-- **Método:** `GET`
-- **Descripción:** Obtiene un solo pedido por su ID.
-- **Parámetros de la solicitud:**
-- `id`: ID del pedido (validada).
-- **Respuestas:**
-- `200 OK`: devuelve los detalles del pedido.
-- `400 Solicitud incorrecta`: error de validación para una ID de pedido no válido.
-- `404 No encontrado`: si no se encuentra el pedido con la ID especificada.
-- `500 Error interno del servidor`: si hay un problema con la obtención de datos.
-
-### 4. **Crear un nuevo pedido**
-- **URL:** `/`
-- **Método:** `POST`
-- **Descripción:** Crea un nuevo pedido.
-- **Cuerpo de la solicitud:**
-- `usuarioId`: ID del usuario.
-- `carrito`: Detalles del carrito de compras.
-- `aPagar`: Monto del pago.
-- **Respuestas:**
-- `201 Created`: Pedido creada exitosamente.
-- `400 Bad Request`: Error de validación en los datos del pedido.
-- `500 Internal Server Error`: Si hay un problema con la creación del pedido.
-
-### 5. **Actualizar pedido por ID**
-- **URL:** `/:id`
-- **Método:** `PUT`
-- **Descripción:** Actualiza un pedido existente.
-- **Parámetros de la solicitud:**
-- `id`: ID del pedido (validada).
-- **Cuerpo de la solicitud:**
-- Datos de la solicitud actualizados (validados).
-- **Respuestas:**
-- `200 OK`: Pedido actualizado exitosamente.
-- `400 Bad Request`: Error de validación o datos de la solicitud no válidos.
-- `404 Not Found`: Si no se encuentra la solicitud con el ID especificado.
-- `500 Internal Server Error`: Si hay un problema con la actualización de la solicitud.
-
-### 6. **Eliminar pedido por ID**
-- **URL:** `/:id`
-- **Método:** `DELETE`
-- **Descripción:** Elimina un pedido existente por su ID.
-- **Parámetros de solicitud:**
-- `id`: ID de solicitud (validada).
-- **Respuestas:**
-- `204 Sin contenido`: Pedido eliminada correctamente.
-- `400 Solicitud incorrecta`: Error de validación o ID de solicitud no válida.
-- `404 Not Found`: Si no se encuentra la solicitud con el ID especificado.
-- `500 Internal Server Error`: Si hay un problema con la eliminación de la solicitud.
-
-### 7. **Buscar solicitudes por nombre**
-- **URL:** `/search`
-- **Método:** `GET`
-- **Descripción:** Busca solicitudes por su nombre utilizando el parámetro de consulta `name`.
-- **Parámetros de consulta de solicitud:**
-- `name`: Nombre de la solicitud que se buscará.
-- **Respuestas:**
-- `200 OK`: Devuelve las solicitudes coincidentes.
-- `500 Error interno del servidor`: Si hay un problema con la búsqueda.
-
-## Validadores
-
-### Validador de solicitudes
-La validación se administra utilizando `express-validator` para garantizar la integridad de los datos entrantes:
-- Valida `id` para las solicitudes, lo que garantiza que tenga un formato válido.
-- Valida los datos del cuerpo de la solicitud al crear o actualizar una solicitud para evitar datos mal formados.
-
-## Manejo de errores
-Cada método incluye el manejo de errores con los códigos de estado HTTP adecuados:
-- `400 Solicitud incorrecta`: Si se producen errores de validación.
-- `404 No encontrado`: si no se encuentra el recurso (por ejemplo, la solicitud).
-- `500 Error interno del servidor`: para problemas o excepciones no controlados del servidor.
-
-------
-
-
-
 ## Talleres
 
 ### 1. **Obtener todos los talleres**
-- **URL:** `/`
+- **URL:** `workshops/`
 - **Método:** `GET`
 - **Descripción:** Obtiene todos los talleres del sistema.
   - **Solicitud:** Sin parámetros.
@@ -543,7 +585,7 @@ Cada método incluye el manejo de errores con los códigos de estado HTTP adecua
 
 
 ### 2. **Obtener taller por ID**
-- **URL:** `/:id`
+- **URL:** `workshops/:id`
 - **Método:** `GET`
 - **Descripción:** Obtiene un taller específico por su ID.
 - **Parámetros de la solicitud:**
@@ -557,7 +599,7 @@ Cada método incluye el manejo de errores con los códigos de estado HTTP adecua
 
 
 ### 3. **Buscar talleres por nombre**
-- **URL:** `/search`
+- **URL:** `workshops/search`
 - **Método:** `GET`
 - **Descripción:** Busca talleres por su nombre utilizando el parámetro de consulta `name`.
 - **Parámetros de la consulta de la solicitud:**
@@ -569,7 +611,7 @@ Cada método incluye el manejo de errores con los códigos de estado HTTP adecua
 
 
 ### 4. **Obtener productos del taller**
-- **URL:** `/products/:id`
+- **URL:** `workshops/products/:id`
 - **Método:** `GET`
 - **Descripción:** Obtiene todos los productos asociados con un taller específico por su ID.
 - **Parámetros de la solicitud:**
@@ -599,28 +641,21 @@ Cada método incluye el manejo de errores con los códigos de estado HTTP adecua
 
 
 
-# API de Talleres Educativos
+## Talleres educativos
 
-## Descripción
-Esta API gestiona las operaciones CRUD (Crear, Leer, Actualizar, Eliminar) relacionadas con talleres educativos. Utiliza Express.js y cuenta con validaciones de datos.
-
-## Controlador: `EducationalWorkshopsController`
-
-### Métodos
-
-#### 1. `getEducationalWorkshops`
+#### 1. Obtener todos los talleres educativos
 
 - **Método**: `GET`
-- **Ruta**: `/educational-workshops`
+- **Ruta**: `/educationalWorkshops`
 - **Descripción**: Obtiene una lista de todos los talleres educativos.
 - **Respuesta**:
   - **200 OK**: Devuelve un array de talleres educativos.
   - **500 Internal Server Error**: Si ocurre un error en la recuperación.
 
-#### 2. `getWorkshop`
+#### 2. Obtener un taller educativo por su id
 
 - **Método**: `GET`
-- **Ruta**: `/educational-workshops/:id`
+- **Ruta**: `/educationalWorkshops/:id`
 - **Descripción**: Obtiene un taller educativo específico por su ID.
 - **Parámetros**:
   - `id`: ID del taller educativo.
@@ -630,10 +665,10 @@ Esta API gestiona las operaciones CRUD (Crear, Leer, Actualizar, Eliminar) relac
   - **404 Not Found**: Si no se encuentra el taller con el ID especificado.
   - **500 Internal Server Error**: Si ocurre un error en la recuperación.
 
-#### 3. `searchEducationalWorkshops`
+#### 3. Obtener talleres educativos por nombre
 
 - **Método**: `GET`
-- **Ruta**: `/educational-workshops/search`
+- **Ruta**: `/educationalWorkshops/search`
 - **Descripción**: Busca talleres educativos por nombre.
 - **Parámetros de consulta**:
   - `name`: Nombre del taller educativo a buscar.
@@ -641,10 +676,10 @@ Esta API gestiona las operaciones CRUD (Crear, Leer, Actualizar, Eliminar) relac
   - **200 OK**: Devuelve un array de talleres que coinciden con la búsqueda.
   - **500 Internal Server Error**: Si ocurre un error en la búsqueda.
 
-#### 4. `getAllEducationalWorkshops`
+#### 4. Obtener todos los talleres educativos (aggregate)
 
 - **Método**: `GET`
-- **Ruta**: `/educational-workshops/all`
+- **Ruta**: `/educationalWorkshops/all`
 - **Descripción**: Obtiene todos los talleres educativos sin filtrar.
 - **Respuesta**:
   - **200 OK**: Devuelve un array de todos los talleres educativos.
@@ -674,4 +709,138 @@ Las rutas están definidas en el enrutador de Express y utilizan los métodos de
 ## Notas
 
 - La validación de datos se realiza utilizando `express-validator` para asegurar que los datos sean correctos antes de procesarlos.
+
 - Se maneja la encriptación de contraseñas al crear talleres educativos, garantizando así la seguridad de los datos de usuario.
+
+  ------
+
+
+
+## Cupones
+
+#### 1. Obtener todos los cupones
+
+- **Método**: `GET`
+- **Ruta**: `/coupons`
+- **Descripción**: Obtiene una lista de todos los cupones.
+- **Respuesta**:
+  - **200 OK**: Devuelve un array de cupones.
+  - **500 Internal Server Error**: Si ocurre un error en la recuperación.
+
+#### 2. Obtener un cupón por su id
+
+- **Método**: `GET`
+- **Ruta**: `/coupons/:id`
+- **Descripción**: Obtiene un cupón específico por su ID.
+- **Parámetros**:
+  - `id`: ID del cupón.
+- **Respuesta**:
+  - **200 OK**: Devuelve el cupón solicitado.
+  - **400 Bad Request**: Si hay errores de validación en el ID.
+  - **404 Not Found**: Si no se encuentra el cupón con el ID especificado.
+  - **500 Internal Server Error**: Si ocurre un error en la recuperación.
+
+#### 3. Obtener los cupones de un usuario
+
+- **Método**: `GET`
+- **Ruta**: `/coupons/user/:id`
+- **Descripción**: Obtiene todos los cupones de un usuario específico por su ID.
+- **Parámetros**:
+  - `id`: ID del usuario.
+- **Respuesta**:
+  - **200 OK**: Devuelve los cupones del usuario.
+  - **400 Bad Request**: Si hay errores de validación en el ID del usuario.
+  - **404 Not Found**: Si no se encuentran cupones para el usuario especificado.
+  - **500 Internal Server Error**: Si ocurre un error en la recuperación.
+
+#### 4. Crear cupones
+
+- **Método**: `POST`
+
+- **Ruta**: `/coupons`
+
+- **Descripción**: Crea un nuevo cupón.
+
+- **Cuerpo de la solicitud**:
+
+  - Ejemplo:
+
+    ```js
+    {
+      codigo: "DESCUENTO46",
+      descuento: 0.8,
+      tipo: "asignado",
+      fechaExpiracion: "2024-10-12T00:00:00.000Z",
+      usuarioId: "5503240427",
+      estado: false
+    }
+    ```
+
+- **Respuesta**:
+  - **201 Created**: Devuelve el cupón creado.
+  - **400 Bad Request**: Si hay errores de validación.
+  - **500 Internal Server Error**: Si ocurre un error al crear el cupón.
+
+#### 5. Actualizar cupon
+
+- **Método**: `PUT`
+- **Ruta**: `/coupons/:id`
+- **Descripción**: Actualiza un cupón específico por su ID.
+- **Parámetros**:
+  - `id`: ID del cupón.
+- **Cuerpo de la solicitud**: Datos a actualizar.
+- **Respuesta**:
+  - **200 OK**: Devuelve el cupón actualizado.
+  - **400 Bad Request**: Si hay errores de validación.
+  - **404 Not Found**: Si no se encuentra el cupón con el ID especificado.
+  - **500 Internal Server Error**: Si ocurre un error al actualizar el cupón.
+
+#### 6. `deleteCoupons`
+
+- **Método**: `DELETE`
+- **Ruta**: `/coupons/:id`
+- **Descripción**: Elimina un cupón específico por su ID.
+- **Parámetros**:
+  - `id`: ID del cupón.
+- **Respuesta**:
+  - **204 No Content**: Indica que la eliminación fue exitosa y no hay contenido adicional.
+  - **400 Bad Request**: Si hay errores de validación.
+  - **404 Not Found**: Si no se encuentra el cupón con el ID especificado.
+  - **500 Internal Server Error**: Si ocurre un error al eliminar el cupón.
+
+#### 7. Obtener cupon por el nombre
+
+- **Método**: `GET`
+- **Ruta**: `/coupons/search`
+- **Descripción**: Busca cupones por nombre.
+- **Parámetros de consulta**:
+  - `name`: Nombre del cupón a buscar.
+- **Respuesta**:
+  - **200 OK**: Devuelve un array de cupones que coinciden con la búsqueda.
+  - **500 Internal Server Error**: Si ocurre un error en la búsqueda.
+
+## Rutas
+
+Las rutas están definidas en el enrutador de Express y utilizan los métodos del controlador `CouponsController`. A continuación se listan las rutas:
+
+| Método | Ruta                | Descripción                        |
+| ------ | ------------------- | ---------------------------------- |
+| GET    | `/coupons/search`   | Busca cupones por nombre.          |
+| GET    | `/coupons/user/:id` | Obtiene cupones por ID de usuario. |
+| GET    | `/coupons/:id`      | Obtiene un cupón por ID.           |
+| GET    | `/coupons`          | Obtiene todos los cupones.         |
+| POST   | `/coupons`          | Crea un nuevo cupón.               |
+| PUT    | `/coupons/:id`      | Actualiza un cupón por ID.         |
+| DELETE | `/coupons/:id`      | Elimina un cupón por ID.           |
+
+## Dependencias
+
+- **Express.js**: Framework web para Node.js.
+- **Express-validator**: Middleware para validar los datos de entrada.
+- **bcryptjs**: Librería para encriptar contraseñas.
+- **jsonwebtoken**: Librería para gestionar tokens JWT.
+
+## Notas
+
+- La validación de datos se realiza utilizando `express-validator` para asegurar que los datos sean correctos antes de procesarlos.
+- Se maneja la encriptación de contraseñas al crear cupones, garantizando así la seguridad de los datos de usuario.
