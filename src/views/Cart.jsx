@@ -204,25 +204,25 @@ export function Cart() {
 			<img className='fixed top-[5rem] right-0 w-[13rem] -z-1 rotate-180 block dark:hidden' src="../../../Rectangle 47-color.svg" alt="Background flecha Derecha" />
       <SearchBar usuario={usuario.userId} setSearchQuery={setSearchQuery} />
       {!searchQuery && (
-        <section className="mt-[6em] flex flex-col items-center justify-center flex-grow overflow-y-auto pb-20 relative"> {/* Agregar padding-bottom */}
+        <section className="mt-[6em] flex flex-col items-center justify-center flex-grow overflow-y-auto pb-20 "> {/* Agregar padding-bottom */}
          <TrianguloIzquierdo style="h-[3.36rem] top-[9.5rem] left-0 text-primary dark:text-dark-tertiary absolute"/>
          <ViewTitleAndDescription title="Tu carrito de compras" description="Revisa aquí los productos que añadiste a tu carrito" />
           <SecccionCartCard cart={cart || { carrito: [] }} onUpdateCart={updateCart}/>
           <div className="flex flex-col items-center w-full">
             <button
-              className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 rounded w-5/6"
+              className="bg-primary dark:bg-dark-tertiary hover:bg-gray-300 text-light dark:text-dark-bg font-bold py-3 rounded w-5/6"
               onClick={handleCouponClick}
             >
               Añadir cupón de descuento
             </button>
-            <div className="mt-4">
+            <div className="mt-4 bg-primary dark:bg-dark-tertiary text-light dark:text-dark-bg py-3 rounded w-3/6 text-center">
               {/* Verificar si cart y cart.aPagar están definidos */}
               {cart && cart.aPagar ? (
                 <>
-                  <p>Sub total: S/${cart.aPagar.subtotal}</p>
-                  <p>Descuento: ${cart.aPagar.descuentoCupon}</p>
-                  <p>Gastos de envío: S/${cart.aPagar.totalEnvio}</p>
-                  <p>Total: S/${cart.aPagar.total}</p>
+                  <p className='text-light dark:text-dark-bg'>Sub total: S/${cart.aPagar.subtotal}</p>
+                  <p className='text-light dark:text-dark-bg'>Descuento: ${cart.aPagar.descuentoCupon}</p>
+                  <p className='text-light dark:text-dark-bg'>Gastos de envío: S/${cart.aPagar.totalEnvio}</p>
+                  <p className='text-light dark:text-dark-bg'>Total: S/${cart.aPagar.total}</p>
                 </>
               ) : (
                 <p>Cargando información del carrito...</p>
@@ -230,7 +230,7 @@ export function Cart() {
             </div>
             <div className="mt-4"> {/* Separar el botón */}
               <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+                className="bg-primary dark:bg-dark-primary hover:bg-blue-700 text-light font-bold py-2 px-4 rounded mt-4"
                 onClick={handleCheckoutClick}
               >
                 Realizar compra

@@ -172,7 +172,7 @@ const SecccionCartCard = ({ cart, onUpdateCart }) => {
           />
         ))
       ) : (
-        <p>No hay productos en el carrito.</p>
+        <p className='text-[#9D1A1A] dark:text-dark-bg'>No hay productos en el carrito.</p>
       )}
     </div>
   );
