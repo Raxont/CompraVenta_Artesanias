@@ -4,21 +4,19 @@ import io from 'socket.io-client';
 import { initTheme } from '../../tools/theme';
 import PurchaseHistoryButtonChat from "../../components/PurchaseHistoryButton-chat";
 
-const url = import.meta.env.VITE_USE_TUNNEL === "true"
-  ? import.meta.env.VITE_TUNNEL_URL_BACKEND
-  : import.meta.env.VITE_HTTP_BACKEND;
-const socket = io(`${url}`);
+const socket = io('http://localhost:3001');
 
 export function Chat() {
   initTheme();
   const { receptorId } = useParams();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
-  const [userId] = useState(`user_${Math.floor(Math.random() * 10000)}`); // Generar un nuevo userId cada vez
+  const [userId, setUserId] = useState(null); // Cambiado para usar useState y manejar la persistencia
   const [taller, setTaller] = useState('');
-  const [user_id, setUser_id] = useState(null); // Cambiado a usar useState
-  const navigate = useNavigate(); // Inicializar useNavigate
+  let [user_Id,setUser_id] = useState(`user_${Math.floor(Math.random() * 10000)}`); // Generar un nuevo userId cada vez
+  const navigate = useNavigate(); 
 
+  // Fetch del userId de la sesión actual
   useEffect(() => {
     const fetchUserId = async () => {
       try {
@@ -28,24 +26,25 @@ export function Chat() {
         });
 
         if (response.ok) {
-          const data = await response.json();
-
-          // Asegúrate de que el userId esté presente
+          const data = await response.json();          
+          // Si el userId está disponible, lo asignamos al estado
           if (data.userId) {
-            setUser_id(data.userId);
+            setUserId(data.userId);
           } else {
-            console.error('No estás autenticado'); // Si no hay userId, manejar el error
-            navigate('/login'); // Redirigir al login
+            console.error('No estás autenticado');
+            navigate('/login');
           }
         } else {
-          console.error('No estás autenticado'); // Si la respuesta no es OK
-          navigate('/login'); // Redirigir al login
+          console.error('No estás autenticado');
+          navigate('/login');
         }
       } catch (error) {
         console.error('Error al obtener el id del usuario:', error);
-        navigate('/login'); // Redirigir al login en caso de error
+        navigate('/login');
       }
     };
+
+    // Fetch para obtener el taller
     const fetchTaller = async () => {
       try {
         const response = await fetch(`/api/workshops/${receptorId}`);
@@ -56,6 +55,7 @@ export function Chat() {
         console.error('Error al obtener el nombre del taller:', error);
       }
     };
+
     fetchUserId();
 
     if (receptorId) {
@@ -64,41 +64,49 @@ export function Chat() {
   }, [receptorId, navigate]);
 
   useEffect(() => {
-    // Emitir joinRoom cuando userId y taller estén disponibles
-    if (userId && taller) {
-      socket.emit('joinRoom', { userId, taller });
+    // Emitir joinRoom cuando user_Id y taller estén disponibles
+    if (user_Id && taller) {
+      socket.emit('joinRoom', { user_Id, taller,receptorId });
 
+       // Cargar los mensajes anteriores cuando se emiten desde el servidor
       socket.on('loadPreviousMessages', (previousMessages) => {
         setMessages(previousMessages);
+        // Actualizar user_Id basado en el último remitente si es necesario
+        if (previousMessages.length > 0) {
+          const lastMessage = previousMessages[previousMessages.length - 1];
+          setUser_id(lastMessage.remitenteId);
+        }
       });
 
+      // Escuchar los mensajes entrantes en tiempo real
       socket.on('receiveMessage', (message) => {
         setMessages((prevMessages) => [...prevMessages, message]);
 
         // Cerrar la sesión si se recibe el mensaje "Estoy satisfecho"
-        if (message.contenido === "Estoy satisfecho" && message.remitenteId !== userId) {
-          socket.emit('leaveRoom', { userId, taller });
+        if (message.contenido === "Estoy satisfecho" && message.remitenteId !== user_Id) {
+          socket.emit('leaveRoom', { user_Id, taller });
         }
       });
 
+      // Cleanup en la desconexión
       return () => {
         socket.off('loadPreviousMessages');
         socket.off('receiveMessage');
-        socket.emit('leaveRoom', { userId, taller });
+        socket.emit('leaveRoom', { user_Id, taller });
       };
     }
-  }, [userId, taller]);
+  }, [user_Id,taller, receptorId]);
 
+  // Enviar un nuevo mensaje
   const sendMessage = () => {
     if (newMessage.trim()) {
       const messageData = {
-        remitenteId: userId,
+        remitenteId: user_Id, // Usamos el user_Id persistente
         receptorId: receptorId,
         contenido: newMessage,
         fecha: new Date(),
         taller: taller,
       };
-
       socket.emit('sendMessage', messageData);
       setNewMessage('');
     }
@@ -118,16 +126,18 @@ export function Chat() {
         {messages.map((msg, index) => (
           <div
             key={index}
-            className={`message p-2 rounded-md w-[70%] max-w-md ${msg.remitenteId === userId
+            className={`message p-2 rounded-md w-[70%] max-w-md ${
+              msg.remitenteId === user_Id 
                 ? 'bg-primary dark:bg-dark-quintier dark:text-dark-bg bg-light-bg text-dark-bg self-end ml-auto'
                 : 'bg-red-800 dark:bg-dark-primary dark:text-dark-light text-cuatertiary self-start mr-auto'
-              }`}
+            }`}
           >
             <p>{msg.contenido}</p>
-            <span className={`text-xs ${msg.remitenteId === userId
+            <span className={`text-xs ${
+              msg.remitenteId === user_Id 
                 ? 'dark:text-bg'
                 : 'dark:text-light'
-              }`}>
+            }`}>
               {new Date(msg.fecha).toLocaleTimeString()}
             </span>
           </div>

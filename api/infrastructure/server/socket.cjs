@@ -26,39 +26,68 @@ const setupSocket = (server) => {
     console.log("Nuevo cliente conectado"); // Log para indicar que un nuevo cliente se ha conectado
 
     //* Evento cuando el usuario se une a una sala/taller
-    socket.on("joinRoom", async ({ userId, taller }) => {
-      socket.join(taller); // Une al usuario a la sala del taller
-      userTallerMap[socket.id] = taller; // Asigna el taller correspondiente al socket
-      console.log(`${userId} se ha unido al taller ${taller}`); // Log del usuario que se une al taller
+    socket.on("joinRoom", async ({ user_Id, taller,receptorId }) => {
+      try {
+        // Obtén los últimos mensajes desde MongoDB antes de unirte a la sala
+        const lastMessages = await Mensajes.getMessages(null, receptorId); // Obtener todos los mensajes para este taller
+        // Verifica si el último mensaje fue "Estoy satisfecho"
+        const lastMessage = lastMessages.length > 0 ? lastMessages[lastMessages.length - 1] : null;
+        
+        if (!lastMessage || lastMessage.contenido === "Estoy satisfecho") {
+          // Permitir que el usuario ingrese con un nuevo usuarioId
+          socket.join(taller); // Unirse a la sala del taller
+          userTallerMap[socket.id] = taller; // Asigna el taller correspondiente al socket
+          activeChats[user_Id] = taller; // Establece este chat como activo para este usuario
+          console.log(`${user_Id} se ha unido al taller ${taller}`); // Log del usuario que se une al taller
 
-      //* Si no hay buffer de mensajes para este taller, se inicializa
-      if (!messageBuffer[taller]) {
-        messageBuffer[taller] = []; // Inicializa el buffer si no existe
-      }
+        } else {
+            // Obtener los dos últimos mensajes
+            const lastTwoMessages = lastMessages.slice(-2);
 
-      //* Si el usuario no tiene un chat activo, se carga el historial
-      if (!activeChats[userId]) {
-        activeChats[userId] = taller; // Asigna el taller activo al usuario
+            // Variable para almacenar los mensajes a emitir
+            let messagesToEmit;
 
-        //* Cargar mensajes previos desde Redis
-        const previousMessages = await redisClient.getMessages(`chat:${taller}`); // Obtiene mensajes previos de Redis
-        if (previousMessages) {
-          socket.emit("loadPreviousMessages", previousMessages); // Envía los mensajes anteriores al cliente
-        }
-      } else {
-        //* Si el usuario ya está en un chat, se le notifica
-        const previousTaller = activeChats[userId]; // Obtiene el taller anterior
-        if (previousTaller !== taller) {
-          activeChats[userId] = taller; // Actualiza el taller activo del usuario
-          socket.leave(previousTaller); // Sale del taller anterior
-          socket.join(taller); // Se une al nuevo taller
-        }
-        socket.emit("userAlreadyInChat", { message: `Ya estás en el taller: ${previousTaller}.` }); // Notificación de chat activo
+            // Verificamos si hay al menos dos mensajes
+            if (lastTwoMessages.length === 2) {
+              // Comparamos los remitenteId de los dos últimos mensajes
+              if (lastTwoMessages[0].remitenteId === lastTwoMessages[1].remitenteId) {
+                // Si son iguales, emitimos los dos mensajes
+                messagesToEmit = lastTwoMessages.map(msg => ({
+                  contenido: msg.contenido,
+                  remitenteId: msg.remitenteId,
+                  fecha: msg.fecha
+                }));
+              } else {
+                // Si no son iguales, emitimos solo el último mensaje
+                messagesToEmit = [lastTwoMessages[1]];
+              }
+            } else if (lastTwoMessages.length === 1) {
+              // Si solo hay un mensaje, lo emitimos
+              messagesToEmit = [lastTwoMessages[0]];
+            }
+
+            // Actualizar user_Id con el remitenteId del último mensaje
+            if (messagesToEmit && messagesToEmit.length > 0) {
+              user_Id = messagesToEmit[messagesToEmit.length - 1].remitenteId;
+            }
+
+            // Emitir los dos últimos mensajes al usuario
+            socket.emit('loadPreviousMessages', messagesToEmit);
+
+            // Unir al mismo usuario a la sala
+            socket.join(taller);
+            userTallerMap[socket.id] = taller;
+            activeChats[user_Id] = taller;
+            console.log(`${user_Id} (mismo usuario) se ha unido al taller ${taller}`);
+          }
+      } catch (error) {
+        console.error('Error al unir al usuario a la sala:', error);
       }
     });
 
     //* Evento para enviar un mensaje
     socket.on("sendMessage", async (data) => {
+
       const { remitenteId, receptorId, contenido, fecha, taller } = data; // Desestructura la información del mensaje
 
       //* Validación para verificar si el remitente está en el taller correcto
@@ -92,7 +121,7 @@ const setupSocket = (server) => {
         //* Obtener mensajes pendientes desde Redis
         while ((message = await redisClient.popMessage(`chat:${taller}`)) !== null) {
           //* Verificar si el mensaje ya existe en el buffer
-          const exists = messageBuffer[taller].some(
+          const exists = messageBuffer[taller]?.some(
             (msg) =>
               msg.remitenteId === message.remitenteId &&
               msg.receptorId === message.receptorId &&
@@ -102,12 +131,15 @@ const setupSocket = (server) => {
 
           //* Si el mensaje no existe en el buffer, agregarlo
           if (!exists) {
+            if (!messageBuffer[taller]) {
+              messageBuffer[taller] = []; // Inicializa el buffer si no existe
+            }
             messageBuffer[taller].push(message); // Agrega el mensaje al buffer
           }
         }
 
         //* Si hay mensajes en el buffer, guardarlos en MongoDB
-        if (messageBuffer[taller].length > 0) {
+        if (messageBuffer[taller] && messageBuffer[taller].length > 0) {
           try {
             for (const msg of messageBuffer[taller]) {
               await Mensajes.saveMessage(msg); // Guarda cada mensaje en MongoDB
@@ -118,7 +150,7 @@ const setupSocket = (server) => {
           }
         }
       }
-    }, 1 * 30 * 1000); // Intervalo de 30 segundos
+    }, 1 * 5 * 1000); // Intervalo de 5 segundos
 
     //* Evento cuando el cliente se desconecta
     socket.on("disconnect", () => {
