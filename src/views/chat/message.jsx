@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom'; 
+import { useParams } from 'react-router-dom';
 import io from 'socket.io-client';
-import { initTheme } from '../../tools/theme'; 
+import { initTheme } from '../../tools/theme';
 import PurchaseHistoryButtonChat from "../../components/PurchaseHistoryButton-chat";
 
-const socket = io('http://localhost:3001');
+const socket = io('/api');
 
 export function Chat() {
   initTheme();
