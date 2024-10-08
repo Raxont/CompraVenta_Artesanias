@@ -235,16 +235,35 @@ VITE_MONGO_DB_NAME=
 ## **Endpoints de Autenticación**
 
 ### 1. Iniciar sesión con GitHub
+
 - **Método**: `GET`
 - **URL**: `/users/github`
 - **Descripción**: Redirige al usuario a GitHub para autenticarse. Una vez autenticado, el usuario será redirigido de vuelta al sitio con un token de sesión.
 
-### 2. Iniciar sesión con cuenta local
+### 2. Iniciar sesión con Discord
+
+- **Método**: `GET`
+- **URL**: `/users/discord`
+- **Descripción**: Redirige al usuario a discord para autenticarse. Una vez autenticado, el usuario será redirigido de vuelta al sitio con un token de sesión.
+
+### 3. Iniciar sesión con Google
+
+- **Método**: `GET`
+- **URL**: `/users/google`
+- **Descripción**: Redirige al usuario a google para autenticarse. Una vez autenticado, el usuario será redirigido de vuelta al sitio con un token de sesión.
+
+### 4. Iniciar sesión con cuenta local
+
 - **Método**: `POST`
+
 - **URL**: `/users/loginAccount`
+
 - **Descripción**: Inicia sesión utilizando un usuario registrado con correo electrónico o teléfono.
+
 - **Cuerpo de la solicitud**:
+
   - Ejemplo:
+
     ```json
     {
       "user": "laurasofia@gmail.com",
@@ -252,10 +271,18 @@ VITE_MONGO_DB_NAME=
     }
     ```
 
-### 3. Cerrar sesión
+### 5. Cerrar sesión
+
 - **Método**: `POST`
 - **URL**: `/users/logout`
 - **Descripción**: Cierra la sesión del usuario actual, invalidando su token de sesión.
+
+### 6. Obtener la session
+
+- **Método**: `GET`
+- **URL**: `/users/session-data`
+- **Descripción**: Obtiene la sesión del usuario actual, con su id y su token de sesión.
+- **Bearer:** Agregar token en el campo de Auth.
 
 ## **Endpoints del Carrito**
 
