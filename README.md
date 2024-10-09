@@ -225,13 +225,6 @@ VITE_MONGO_DB_NAME=
 - **Parámetros**:
   - `id`: _id del usuario a eliminar.
 
-### 6. Buscar usuarios
-- **Método**: `GET`
-- **URL**: `/users/search/?name=jm_gq`
-- **Descripción**: Busca usuarios por nombre o algún otro criterio de búsqueda. Puede utilizar parámetros de consulta.
-- **Parámetros de consulta**:
-  - `name`: Nombre del usuario a buscar.
-
 ## **Endpoints de Autenticación**
 
 ### 1. Iniciar sesión con GitHub
@@ -294,7 +287,7 @@ VITE_MONGO_DB_NAME=
   - Ejemplo:
     ```json
     {
-      "userId": "7360435733"
+      "id": "7360435733"
     }
     ```
 
@@ -383,45 +376,35 @@ VITE_MONGO_DB_NAME=
 ## Productos
 
 ### 1. **Obtener todos los productos**
-   - URL:** `/`
+   - **URL:** `products/`
    - **Método:** `GET`
-   - Descripción:** Obtiene una lista de todos los productos.
-   - Solicitud:**
+   - **Descripción:** Obtiene una lista de todos los productos.
+   - **Solicitud:**
      - Sin parámetros
-   - Respuestas:**
+   - **Respuestas:**
      - `200 OK`: Devuelve la lista de productos.
      - `400 Bad Request`: Errores de validación o petición malformada.
      - `500 Error interno del servidor`: Cualquier otro error del servidor.
 
-### 2. **Obtener producto por ID
-   - URL: `/:id`.
+### 2. Obtener producto por ID
+   - **URL: **`/:id`.
    - **Método:** `GET`
-   - Descripción:** Recupera un producto por su ID único.
-   - Parámetros de la petición
+   - **Descripción:** Recupera un producto por su ID único.
+   - **Parámetros de la petición**
      - `id` (path param): El ID del producto (validado).
-   - Respuestas:**
+   - **Respuestas:**
      - `200 OK`: Devuelve los detalles del producto.
      - `400 Bad Request`: Errores de validación para el ID del producto.
      - `404 No encontrado`: Si no se encuentra el producto con el ID dado.
      - `500 Error interno del servidor`: Cualquier otro error del servidor.
 
-### 3. **Buscar productos por nombre**
-   - URL:`/search
-   - **Método:** `GET`
-   - **Descripción:** Busca productos por su nombre utilizando el parámetro de consulta `name`.
-   - Parámetros de la consulta:**
-     - `nombre`: El nombre del producto a buscar.
-   - Respuestas:**
-     - `200 OK`: Devuelve los productos que coinciden con los criterios de búsqueda.
-     - `500 Error interno del servidor`: Cualquier otro error del servidor.
-
-### 4. **Obtener productos por categoría**
+### 3. **Obtener productos por categoría**
 - **URL:**`/categoría/:categoría`
 - **Método:** `GET`
 - **Descripción:** Recupera productos por su categoría.
-- Parámetros de la petición
+- **Parámetros de la petición**
      - `categoria` (path param): La categoría de los productos (validado).
-- Respuestas:**
+- **Respuestas:**
      - `200 OK`: Devuelve la lista de productos de la categoría.
      - `400 Bad Request`: Errores de validación.
      - `500 Error interno del servidor`: Cualquier otro error del servidor.
@@ -437,11 +420,11 @@ VITE_MONGO_DB_NAME=
   - Estampado
   - Pintura Tradicional
 
-### 5. **Obtener productos por categoría para descuentos**
-- URL: `/discounts/:categoria`.
+### 4. **Obtener productos por categoría para descuentos**
+- **URL:** `/discounts/:categoria`.
 - **Método:** `GET`
 - **Descripción:** Recupera productos por su categoría para descuentos.
-- Parámetros de la petición
+- **Parámetros de la petición**
      - `categoria` (path param): La categoría de productos para descuentos (validada).
 - **Respuestas:**
      - `200 OK`: Devuelve la lista de productos con descuento.
@@ -459,14 +442,14 @@ VITE_MONGO_DB_NAME=
   - Estampado
   - Pintura Tradicional
 
-### 6. **Obtener Productos Favoritos por Usuario**
-- URL:`/favourites/:id/:categoria`.
+### 5. **Obtener Productos Favoritos por Usuario**
+- **URL:**`/favourites/:id/:categoria`.
 - **Método:** `GET`
 - **Descripción:** Recupera los productos favoritos de un usuario filtrados por categoría.
-- Parámetros de la petición
+- **Parámetros de la petición**
      - `id` (path param): El ID del usuario (validado).
      - `categoria` (path param): La categoría del producto.
-- Respuestas:**
+- **Respuestas:**
      - `200 OK`: Devuelve la lista de productos favoritos de la categoría especificada.
      - `400 Bad Request`: Errores de validación o datos incorrectos.
      - `404 No encontrado`: Si no se encuentra el usuario o los productos de la categoría especificada.
@@ -591,17 +574,6 @@ Cada método captura cualquier error, y cuando se produce un error, la API devue
 - `404 Not Found`: Si no se encuentra la solicitud con el ID especificado.
 - `500 Internal Server Error`: Si hay un problema con la eliminación de la solicitud.
 
-### 6. **Buscar pedidos por nombre**
-
-- **URL:** `requests/search`
-- **Método:** `GET`
-- **Descripción:** Busca solicitudes por su nombre utilizando el parámetro de consulta `name`.
-- **Parámetros de consulta de solicitud:**
-- `name`: Nombre de la solicitud que se buscará.
-- **Respuestas:**
-- `200 OK`: Devuelve las solicitudes coincidentes.
-- `500 Error interno del servidor`: Si hay un problema con la búsqueda.
-
 ## Validadores
 
 ### Validador de solicitudes
@@ -653,7 +625,6 @@ Cada método incluye el manejo de errores con los códigos de estado HTTP adecua
   - `404 Not Found`: Si no se encuentra el pago con el ID indicado.
   - `500 Internal Server Error`: Cualquier otro error del servidor.
 
-  
 
 
 ### 3. **Crear un nuevo pago**
@@ -682,21 +653,6 @@ Cada método incluye el manejo de errores con los códigos de estado HTTP adecua
       "metodoPago": "tarjeta"
   }
   ```
-
-
-
-
-### 6. **Buscar pagos por nombre**
-- **URL:** `payments/search`
-- **Método:** `GET`
-- **Descripción:** busca pagos por su nombre utilizando el parámetro de consulta `name`.
-- **Parámetros de consulta de solicitud:**
-  - `name`: el nombre del pago que se buscará.
-
-- **Respuestas:**
-  - `200 OK`: devuelve los pagos que coinciden con los criterios de búsqueda.
-  - `500 Internal Server Error`: cualquier otro error del servidor.
-
 
 ## Validadores
 
@@ -744,19 +700,7 @@ Cada método detecta los errores y devuelve el código de estado HTTP correspond
   - `500 Internal Server Error`: Si hay un problema con la obtención de datos.
 
 
-### 3. **Buscar talleres por nombre**
-- **URL:** `workshops/search`
-- **Método:** `GET`
-- **Descripción:** Busca talleres por su nombre utilizando el parámetro de consulta `name`.
-- **Parámetros de la consulta de la solicitud:**
-  - `name`: Nombre del taller que se buscará.
-
-- **Respuestas:**
-  - `200 OK`: Devuelve los talleres que coinciden.
-  - `500 Error interno del servidor`: Si hay un problema con la búsqueda.
-
-
-### 4. **Obtener productos del taller**
+### 3. **Obtener productos del taller**
 - **URL:** `workshops/products/:id`
 - **Método:** `GET`
 - **Descripción:** Obtiene todos los productos asociados con un taller específico por su ID.
@@ -789,16 +733,7 @@ Cada método incluye el manejo de errores con los códigos de estado HTTP adecua
 
 ## Talleres educativos
 
-#### 1. Obtener todos los talleres educativos
-
-- **Método**: `GET`
-- **Ruta**: `/educationalWorkshops`
-- **Descripción**: Obtiene una lista de todos los talleres educativos.
-- **Respuesta**:
-  - **200 OK**: Devuelve un array de talleres educativos.
-  - **500 Internal Server Error**: Si ocurre un error en la recuperación.
-
-#### 2. Obtener un taller educativo por su id
+#### 1. Obtener un taller educativo por su id
 
 - **Método**: `GET`
 - **Ruta**: `/educationalWorkshops/:id`
@@ -811,21 +746,10 @@ Cada método incluye el manejo de errores con los códigos de estado HTTP adecua
   - **404 Not Found**: Si no se encuentra el taller con el ID especificado.
   - **500 Internal Server Error**: Si ocurre un error en la recuperación.
 
-#### 3. Obtener talleres educativos por nombre
+#### 2. Obtener todos los talleres educativos
 
 - **Método**: `GET`
-- **Ruta**: `/educationalWorkshops/search`
-- **Descripción**: Busca talleres educativos por nombre.
-- **Parámetros de consulta**:
-  - `name`: Nombre del taller educativo a buscar.
-- **Respuesta**:
-  - **200 OK**: Devuelve un array de talleres que coinciden con la búsqueda.
-  - **500 Internal Server Error**: Si ocurre un error en la búsqueda.
-
-#### 4. Obtener todos los talleres educativos (aggregate)
-
-- **Método**: `GET`
-- **Ruta**: `/educationalWorkshops/all`
+- **Ruta**: `/educationalWorkshops`
 - **Descripción**: Obtiene todos los talleres educativos sin filtrar.
 - **Respuesta**:
   - **200 OK**: Devuelve un array de todos los talleres educativos.
@@ -914,7 +838,7 @@ Las rutas están definidas en el enrutador de Express y utilizan los métodos de
     ```js
     {
       codigo: "DESCUENTO46",
-      descuento: 0.8,
+      descuento: 10,
       tipo: "asignado",
       fechaExpiracion: "2024-10-12T00:00:00.000Z",
       usuarioId: "5503240427",
@@ -953,17 +877,6 @@ Las rutas están definidas en el enrutador de Express y utilizan los métodos de
   - **400 Bad Request**: Si hay errores de validación.
   - **404 Not Found**: Si no se encuentra el cupón con el ID especificado.
   - **500 Internal Server Error**: Si ocurre un error al eliminar el cupón.
-
-#### 7. Obtener cupon por el nombre
-
-- **Método**: `GET`
-- **Ruta**: `/coupons/search`
-- **Descripción**: Busca cupones por nombre.
-- **Parámetros de consulta**:
-  - `name`: Nombre del cupón a buscar.
-- **Respuesta**:
-  - **200 OK**: Devuelve un array de cupones que coinciden con la búsqueda.
-  - **500 Internal Server Error**: Si ocurre un error en la búsqueda.
 
 ## Rutas
 
