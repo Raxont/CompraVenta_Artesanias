@@ -387,7 +387,7 @@ VITE_MONGO_DB_NAME=
      - `500 Error interno del servidor`: Cualquier otro error del servidor.
 
 ### 2. Obtener producto por ID
-   - **URL: **`/:id`.
+   - **URL: **`products/:id`.
    - **Método:** `GET`
    - **Descripción:** Recupera un producto por su ID único.
    - **Parámetros de la petición**
@@ -399,7 +399,7 @@ VITE_MONGO_DB_NAME=
      - `500 Error interno del servidor`: Cualquier otro error del servidor.
 
 ### 3. **Obtener productos por categoría**
-- **URL:**`/categoría/:categoría`
+- **URL:**`products/category/:categoría`
 - **Método:** `GET`
 - **Descripción:** Recupera productos por su categoría.
 - **Parámetros de la petición**
@@ -421,7 +421,7 @@ VITE_MONGO_DB_NAME=
   - Pintura Tradicional
 
 ### 4. **Obtener productos por categoría para descuentos**
-- **URL:** `/discounts/:categoria`.
+- **URL:** `products/discounts/:categoria`.
 - **Método:** `GET`
 - **Descripción:** Recupera productos por su categoría para descuentos.
 - **Parámetros de la petición**
@@ -443,7 +443,7 @@ VITE_MONGO_DB_NAME=
   - Pintura Tradicional
 
 ### 5. **Obtener Productos Favoritos por Usuario**
-- **URL:**`/favourites/:id/:categoria`.
+- **URL:**`products/favourites/:id/:categoria`.
 - **Método:** `GET`
 - **Descripción:** Recupera los productos favoritos de un usuario filtrados por categoría.
 - **Parámetros de la petición**
